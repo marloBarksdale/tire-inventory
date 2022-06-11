@@ -2,9 +2,14 @@ import mongoose from 'mongoose';
 
 const tireSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  price: { type: mongoose.Types.Decimal128, required: true },
-  size: { type: mongoose.SchemaTypes.Number, required: true },
-  season: { type: mongoose.Types.ObjectId, ref: 'Season' },
+  price: { type: Number, required: true },
+  size: { type: mongoose.SchemaTypes.ObjectId, ref: 'Size' },
+  manufacturer: { type: mongoose.SchemaTypes.ObjectId, ref: 'Manufacturer' },
+  season: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: 'Season',
+  },
+  //Add Stock
 });
 
 tireSchema.virtual('url').get(function () {
