@@ -4,7 +4,8 @@ import 'dotenv/config';
 import logger from 'morgan';
 import path, { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-
+import mongoose from 'mongoose';
+import Tire from '../models/tire_model.js';
 debug('tire-inventory:server');
 
 const app = express();
@@ -20,5 +21,13 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(path.join(__dirname, '../public')));
+
+const dbConnect = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB, { dbName: 'tire-inventory' });
+  } catch (error) {}
+};
+
+dbConnect();
 
 export { app };
