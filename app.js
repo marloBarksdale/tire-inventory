@@ -1,4 +1,5 @@
 import Manufacturer from './models/manufacturer_model.js';
+import Size from './models/size_model.js';
 import Tire from './models/tire_model.js';
 import { app } from './utils/init.js';
 
