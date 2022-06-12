@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import Tire from '../models/tire_model.js';
 
 export const getTires = async (req, res, next) => {
@@ -10,14 +12,20 @@ export const getTires = async (req, res, next) => {
 
 export const getTire = async (req, res, next) => {
   try {
-    const tire = await Tire.findById(req.params.id).save();
+    const tire = await Tire.findById(req.params.id).populate([
+      'manufacturer',
+      'season',
+      'size',
+    ]);
     res.send(tire);
   } catch (error) {}
 };
 
 export const addTire = async (req, res, next) => {
   try {
-    const tire = await new Tire(req.body).save();
+    const tire = new Tire(req.body);
+
+    await tire.save();
     res.send(tire);
   } catch (error) {}
 };
