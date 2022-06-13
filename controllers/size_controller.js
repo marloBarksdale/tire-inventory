@@ -1,4 +1,6 @@
+import _ from 'lodash';
 import Size from '../models/size_model.js';
+import Tire from '../models/tire_model.js';
 
 export const getSizes = async (req, res, next) => {
   try {
@@ -26,6 +28,22 @@ export const addSize = async (req, res, next) => {
     }
 
     await size.save();
+
+    res.send(size);
+  } catch (error) {}
+};
+
+export const deleteSize = async (req, res, next) => {
+  try {
+    const tires = await Tire.find({ size: req.params.id });
+
+    if (!_.isEmpty(tires)) {
+      return res.send(
+        'Cannot delete this Size because of existing tires' + tires,
+      );
+    }
+
+    const size = await Size.findByIdAndDelete(req.params.id);
 
     res.send(size);
   } catch (error) {}
