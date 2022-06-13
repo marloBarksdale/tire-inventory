@@ -9,14 +9,11 @@ export const getManufacturers = async (req, res, next) => {
 };
 
 export const getManufacturer = async (req, res, next) => {
-  console.log('here');
   console.log(req.params.id);
   try {
-    const manufacturer = await Manufacturer.findById(req.params.id).populate(
-      'tires',
-    );
+    const manufacturer = await Manufacturer.findById(req.params.id);
 
-    res.send({ manufacturer, tires: manufacturer.tires });
+    res.send(manufacturer);
   } catch (error) {}
 };
 

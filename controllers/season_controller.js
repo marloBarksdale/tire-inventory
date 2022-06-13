@@ -11,12 +11,12 @@ export const getSeasons = async (req, res, next) => {
 export const getSeason = async (req, res, next) => {
   try {
     const season = await Season.findById(req.params.id);
-    const tires = await Tire.find({ season: req.params.id }).populate([
-      'manufacturer',
-      'size',
-    ]);
+    // const tires = await Tire.find({ season: req.params.id }).populate([
+    //   'manufacturer',
+    //   'size',
+    // ]);
 
-    res.send({ season, tires });
+    res.send(season);
   } catch (error) {}
 };
 

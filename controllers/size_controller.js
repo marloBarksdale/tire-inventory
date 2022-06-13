@@ -11,7 +11,7 @@ export const getSize = async (req, res, next) => {
   try {
     const size = await Size.findById(req.params.id).populate('tires');
 
-    res.send({ size, tires: size.tires });
+    res.send(size);
   } catch (error) {}
 };
 

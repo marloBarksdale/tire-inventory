@@ -29,3 +29,10 @@ export const addTire = async (req, res, next) => {
     res.send(tire);
   } catch (error) {}
 };
+
+export const deleteTire = async (req, res, next) => {
+  try {
+    const tire = await Tire.findByIdAndDelete(req.params.id);
+    res.send(tire);
+  } catch (error) {}
+};
