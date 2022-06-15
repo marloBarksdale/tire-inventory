@@ -30,6 +30,19 @@ export const addTire = async (req, res, next) => {
   } catch (error) {}
 };
 
+export const updateTire = async (req, res, next) => {
+  try {
+    const tire = await Tire.findByIdAndUpdate(
+      req.params.id,
+      {
+        ...req.body,
+      },
+      { new: true },
+    );
+    res.send(tire);
+  } catch (error) {}
+};
+
 export const deleteTire = async (req, res, next) => {
   try {
     const tire = await Tire.findByIdAndDelete(req.params.id);
