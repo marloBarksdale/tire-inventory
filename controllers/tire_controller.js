@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-
 import Tire from '../models/tire_model.js';
 
 export const getTires = async (req, res, next) => {
@@ -23,6 +21,7 @@ export const getTire = async (req, res, next) => {
 
 export const addTire = async (req, res, next) => {
   try {
+    console.log('here');
     const tire = new Tire(req.body);
 
     await tire.save();
