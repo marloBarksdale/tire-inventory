@@ -15,6 +15,10 @@ seasonRouter.get('/', getSeasons);
 seasonRouter.get('/:id', getSeason);
 seasonRouter.post('/add-season', isValid(joiSchemas.season), addSeason);
 seasonRouter.post('/delete-season/:id', deleteSeason);
-seasonRouter.post('/update-season/:id', updateSeason);
+seasonRouter.post(
+  '/update-season/:id',
+  isValid(joiSchemas.season),
+  updateSeason,
+);
 
 export default seasonRouter;

@@ -23,6 +23,12 @@ export const getSeason = async (req, res, next) => {
 
 export const addSeason = async (req, res, next) => {
   try {
+    const exists = await Season.findOne({ name: req.body.name });
+
+    if (exists) {
+      return res.send(exists.url);
+    }
+
     const season = new Season(req.body);
     await season.save();
     res.send(season);
@@ -31,7 +37,11 @@ export const addSeason = async (req, res, next) => {
 
 export const updateSeason = async (req, res, next) => {
   try {
-    const exists = await Season.findOne({ name: req.body.name });
+    let name = _.split(req.body.name, /[^a-zA-Z\d\s:]/).join(' ');
+
+    name = _.startCase(name.toLowerCase());
+
+    const exists = await Season.findOne({ name });
 
     if (exists) {
       return res.send(exists.url);

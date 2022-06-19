@@ -2,16 +2,15 @@ import _ from 'lodash';
 
 const isValid = (schema) => {
   return (req, res, next) => {
-    let presence = 'optional';
-    if (req.path.includes('update')) {
-      presence = 'optional';
+    if (req.body.name) {
+      let name = _.split(req.body.name, /[^a-zA-Z\d\s:]/).join(' ');
+
+      req.body.name = _.startCase(name.toLowerCase());
     }
 
     const { error, value } = schema.validate(req.body, {
       abortEarly: false,
     });
-
-    console.log('R');
 
     if (error) {
       const err = new Error();

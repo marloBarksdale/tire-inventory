@@ -20,8 +20,14 @@ export const getTire = async (req, res, next) => {
 };
 
 export const addTire = async (req, res, next) => {
+  const { name, manufacturer, season, size } = req.body;
+
   try {
-    console.log('here');
+    const exists = await Tire.findOne({ name, manufacturer, season, size });
+    if (exists) {
+      return res.send(exists.url);
+    }
+
     const tire = new Tire(req.body);
 
     await tire.save();
