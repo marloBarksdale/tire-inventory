@@ -29,6 +29,16 @@ export const addSeason = async (req, res, next) => {
   } catch (error) {}
 };
 
+export const updateSeason = async (req, res, next) => {
+  try {
+    const exists = await Season.findOne({ name: req.body.name });
+
+    if (exists) {
+      return res.send(exists.url);
+    }
+  } catch (error) {}
+};
+
 export const deleteSeason = async (req, res, next) => {
   try {
     const tires = await Tire.find({ season: req.params.id });

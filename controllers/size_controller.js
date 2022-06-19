@@ -33,6 +33,24 @@ export const addSize = async (req, res, next) => {
   } catch (error) {}
 };
 
+export const updateSize = async (req, res, next) => {
+  try {
+    const exists = await Size.findOne({ diameter: req.body.diameter });
+
+    if (exists) {
+      return res.send(exists.url);
+    }
+
+    const size = await Size.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body },
+      { new: true },
+    );
+
+    res.send(size);
+  } catch {}
+};
+
 export const deleteSize = async (req, res, next) => {
   try {
     const tires = await Tire.find({ size: req.params.id });

@@ -1,13 +1,8 @@
-import Manufacturer from './models/manufacturer_model.js';
-import Season from './models/season_model.js';
-import Size from './models/size_model.js';
-import Tire from './models/tire_model.js';
 import manufacturerRouter from './routes/manufacturer_routes.js';
 import seasonRouter from './routes/season_routes.js';
 import sizeRouter from './routes/size_routes.js';
 import tireRouter from './routes/tire_routes.js';
 import { app } from './utils/init.js';
-import _ from 'lodash';
 
 app.use('/tires', tireRouter);
 app.use('/manufacturers', manufacturerRouter);
@@ -35,6 +30,10 @@ app.use('/', (req, res) => {
 // };
 
 // run();
+
+app.use((error, req, res, next) => {
+  res.send(error);
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`Up on ${process.env.PORT}`);
