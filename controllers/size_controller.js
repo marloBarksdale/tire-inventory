@@ -38,7 +38,7 @@ export const updateSize = async (req, res, next) => {
     const exists = await Size.findOne({ diameter: req.body.diameter });
 
     if (exists) {
-      return res.send(exists.url);
+      return res.send('This size already exists: ' + exists.url);
     }
 
     const size = await Size.findByIdAndUpdate(

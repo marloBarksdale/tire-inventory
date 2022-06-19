@@ -37,15 +37,19 @@ export const addSeason = async (req, res, next) => {
 
 export const updateSeason = async (req, res, next) => {
   try {
-    let name = _.split(req.body.name, /[^a-zA-Z\d\s:]/).join(' ');
-
-    name = _.startCase(name.toLowerCase());
+    let name = req.body.name;
 
     const exists = await Season.findOne({ name });
 
     if (exists) {
-      return res.send(exists.url);
+      return res.send('This season already exists: ' + exists.url);
     }
+
+    const season = await Season.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body },
+      { new: true },
+    );
   } catch (error) {}
 };
 
@@ -55,7 +59,7 @@ export const deleteSeason = async (req, res, next) => {
 
     if (!_.isEmpty(tires)) {
       return res.send(
-        'Cannot delete this Season because of existing tires' + tires,
+        'Cannot delete this Season because of existing tires: ' + tires,
       );
     }
 

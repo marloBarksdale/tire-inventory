@@ -37,6 +37,14 @@ export const addTire = async (req, res, next) => {
 
 export const updateTire = async (req, res, next) => {
   try {
+    const { name, manufacturer, season, size } = req.params.body;
+
+    const exists = await Tire.findOne({ name, manufacturer, season, size });
+
+    if (exists) {
+      return res.send('This tire alreadys exists: ' + exists.url);
+    }
+
     const tire = await Tire.findByIdAndUpdate(
       req.params.id,
       {

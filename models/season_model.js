@@ -15,14 +15,14 @@ seasonSchema.virtual('tires', {
   ref: 'Tire',
 });
 
-seasonSchema.pre('save', async function (next) {
-  let name = _.split(this.name, /[^a-zA-Z\d\s:]/).join(' ');
+// seasonSchema.pre('save', async function (next) {
+//   let name = _.split(this.name, /[^a-zA-Z\d\s:]/).join(' ');
 
-  name = _.startCase(name.toLowerCase());
-  this.name = name;
+//   name = _.startCase(name.toLowerCase());
+//   this.name = name;
 
-  next();
-});
+//   next();
+// });
 
 const Season = mongoose.model('Season', seasonSchema);
 

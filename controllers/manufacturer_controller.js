@@ -21,7 +21,30 @@ export const getManufacturer = async (req, res, next) => {
 
 export const addManufacturer = async (req, res, next) => {
   try {
+    const exists = await Manufacturer.findOne({ name: req.body.name });
+
+    if (exists) {
+      return res.send(exists.url);
+    }
     const manufacturer = await new Manufacturer(req.body).save();
+
+    res.send(manufacturer);
+  } catch (error) {}
+};
+
+export const updateManufacturer = async (req, res, next) => {
+  try {
+    const exists = await Manufacturer.findOne({ name: req.body.name });
+    if (exists) {
+      return res.send('This manufacturer already exists: ' + exists.url);
+    }
+    const manufacturer = await Manufacturer.findByIdAndUpdate(
+      req.params.id,
+      {
+        ...req.body,
+      },
+      { new: true },
+    );
 
     res.send(manufacturer);
   } catch (error) {}
