@@ -7,9 +7,28 @@ import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
 import Tire from '../models/tire_model.js';
 debug('tire-inventory:server');
+import session from 'express-session';
+import MongoDBStore from 'connect-mongodb-session';
 
 const app = express();
 
+const sessionStore = MongoDBStore(session);
+
+const store = new sessionStore({
+  uri: process.env.MONGODB,
+  databaseName: 'tire-inventory',
+  collection: 'sessions',
+});
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store,
+    cookie: { maxAge: 6000 * 10 },
+  }),
+);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 

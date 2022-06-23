@@ -37,7 +37,7 @@ export const addTire = async (req, res, next) => {
 
 export const updateTire = async (req, res, next) => {
   try {
-    const { name, manufacturer, season, size } = req.params.body;
+    const { name, manufacturer, season, size } = req.body;
 
     const exists = await Tire.findOne({ name, manufacturer, season, size });
 

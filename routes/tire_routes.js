@@ -6,12 +6,13 @@ import {
   getTires,
   updateTire,
 } from '../controllers/tire_controller.js';
+import auth from '../middleware/auth.js';
 import { optionalUpdate } from '../middleware/update-middleware.js';
 import { isValid } from '../middleware/validation.js';
 import validationSchema from '../middleware/validationSchemas.js';
 const tireRouter = express.Router();
 
-tireRouter.get('/', getTires);
+tireRouter.get('/', auth, getTires);
 tireRouter.get('/:id', getTire);
 tireRouter.post(
   '/add-tire',
@@ -22,7 +23,7 @@ tireRouter.post(
 tireRouter.post('/delete-tire/:id', deleteTire);
 tireRouter.post(
   '/update-tire/:id',
-  optionalUpdate(),
+  optionalUpdate,
   isValid(validationSchema.tire),
   updateTire,
 );

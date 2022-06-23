@@ -1,6 +1,38 @@
 import joi from 'joi';
+import validator from 'validator';
 
 const joiSchemas = {
+  user: joi.object().keys({
+    first_name: joi.string().trim().required(),
+    last_name: joi.string().trim().required(),
+    username: joi
+      .string()
+      .trim()
+      .custom((value, helper) => {
+        if (validator.contains(value, ' ')) {
+          return helper.message('Username does not meet requirements');
+        } else {
+          return true;
+        }
+      })
+      .required(),
+    email: joi.string().email().required(),
+    password: joi.string().custom((value, helper) => {
+      if (
+        !validator.isStrongPassword(value, {
+          minLength: 8,
+          minUppercase: 1,
+          minNumbers: 2,
+          minSymbols: 1,
+          minLowercase: 1,
+        })
+      ) {
+        return helper.message('Password does not meet requirements');
+      } else {
+        return true;
+      }
+    }),
+  }),
   tire: joi.object().keys({
     name: joi
       .string()
