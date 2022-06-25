@@ -1,8 +1,13 @@
+import { Timestamp } from 'mongodb';
 import mongoose from 'mongoose';
 
-const manufacturerSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-});
+const manufacturerSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    creator: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
+  },
+  { timestamps: true },
+);
 
 manufacturerSchema.virtual('url').get(function () {
   return `/manufacturer/${this._id}`;

@@ -15,6 +15,10 @@ export const postSignup = async (req, res, next) => {
   } catch (error) {}
 };
 
+export const getSignup = async (req, res, next) => {
+  res.render('signup');
+};
+
 export const getLogin = (req, res, next) => {
   res.send('Login page');
 };
@@ -35,5 +39,6 @@ export const postLogin = async (req, res, next) => {
   req.session.isLoggedIn = true;
   req.session.user = user;
   req.user = user;
+  res.locals.isLoggedIn = 2;
   res.send(user);
 };

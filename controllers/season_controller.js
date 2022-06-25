@@ -55,6 +55,14 @@ export const updateSeason = async (req, res, next) => {
 
 export const deleteSeason = async (req, res, next) => {
   try {
+    const season = await Season.findOne({ _id: req.params.id });
+
+    if (!season) {
+      return res.send('Not found!');
+    } else if (season.creator.toString() !== req.session.user._id.toString()) {
+      return res.send('Deletion not allowed');
+    }
+
     const tires = await Tire.find({ season: req.params.id });
 
     if (!_.isEmpty(tires)) {
@@ -63,7 +71,7 @@ export const deleteSeason = async (req, res, next) => {
       );
     }
 
-    const season = await Season.findByIdAndDelete(req.params.id);
+    await Season.findByIdAndDelete(req.params.id);
     res.send(season);
   } catch (error) {}
 };

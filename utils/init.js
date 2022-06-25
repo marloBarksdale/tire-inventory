@@ -26,7 +26,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store,
-    cookie: { maxAge: 6000 * 10 },
+    cookie: { maxAge: 60000 * 60 },
   }),
 );
 const __filename = fileURLToPath(import.meta.url);

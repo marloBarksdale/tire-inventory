@@ -1,9 +1,13 @@
 import mongoose from 'mongoose';
 import _ from 'lodash';
 
-const seasonSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-});
+const seasonSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    creator: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
+  },
+  { timestamps: true },
+);
 
 seasonSchema.virtual('url').get(function () {
   return `/seasons/${this._id}`;

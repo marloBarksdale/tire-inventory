@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { SystemZone } from 'luxon';
 import Size from '../models/size_model.js';
 import Tire from '../models/tire_model.js';
 
@@ -53,6 +54,14 @@ export const updateSize = async (req, res, next) => {
 
 export const deleteSize = async (req, res, next) => {
   try {
+    const size = await Size.findOne({ _id: req.params.id });
+
+    if (!size) {
+      return res.status(404).send('Not found');
+    } else if (size.creator.toString() !== req.session.user._id.toString()) {
+      return res.status(403).send('Deletion not allowed');
+    }
+
     const tires = await Tire.find({ size: req.params.id });
 
     if (!_.isEmpty(tires)) {
@@ -61,7 +70,7 @@ export const deleteSize = async (req, res, next) => {
       );
     }
 
-    const size = await Size.findByIdAndDelete(req.params.id);
+    await Size.findByIdAndDelete(req.params.id);
 
     res.send(size);
   } catch (error) {}

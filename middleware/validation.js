@@ -9,10 +9,12 @@ const isValid = (schema) => {
       req.body.name = _.startCase(name.toLowerCase()).trim();
     }
 
-    if (validator.isEmail(req.body.email)) {
-      req.body.email = validator.normalizeEmail(req.body.email, {
-        all_lowercase: true,
-      });
+    if (req.body.email) {
+      if (validator.isEmail(req.body.email)) {
+        req.body.email = validator.normalizeEmail(req.body.email, {
+          all_lowercase: true,
+        });
+      }
     }
 
     const { error, value } = schema.validate(req.body, {
@@ -23,6 +25,7 @@ const isValid = (schema) => {
     if (error) {
       const err = new Error();
       err.message = error;
+      console.log(err);
       next(error);
     }
 

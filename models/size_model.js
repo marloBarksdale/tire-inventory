@@ -1,8 +1,12 @@
 import mongoose from 'mongoose';
 
-const sizeSchema = new mongoose.Schema({
-  diameter: { type: mongoose.SchemaTypes.Number, required: true },
-});
+const sizeSchema = new mongoose.Schema(
+  {
+    diameter: { type: mongoose.SchemaTypes.Number, required: true },
+    creator: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
+  },
+  { timestamps: true },
+);
 
 sizeSchema.virtual('url').get(function () {
   return `/tire-size/${this._id}`;

@@ -27,4 +27,5 @@ tireRouter.post(
   isValid(validationSchema.tire),
   updateTire,
 );
+
 export default tireRouter;
