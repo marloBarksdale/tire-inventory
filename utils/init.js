@@ -49,4 +49,4 @@ const dbConnect = async () => {
 
 dbConnect();
 
-export { app };
+export { app, store };

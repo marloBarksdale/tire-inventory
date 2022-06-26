@@ -1,5 +1,6 @@
 import User from '../models/user_model.js';
 import bcrypt from 'bcrypt';
+import { store } from '../utils/init.js';
 
 export const postSignup = async (req, res, next) => {
   try {
@@ -41,4 +42,22 @@ export const postLogin = async (req, res, next) => {
   req.user = user;
   res.locals.isLoggedIn = 2;
   res.send(user);
+};
+
+export const postLogout = async (req, res, next) => {
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
+};
+export const postLogoutAll = async (req, res, next) => {
+  const id = req.session.user._id.toString();
+  store.all((err, sessions) => {
+    sessions.forEach((sesh) => {
+      if (sesh.session.user._id.toString() === id) {
+        store.destroy(sesh._id);
+      }
+    });
+  });
+
+  res.redirect('login');
 };
