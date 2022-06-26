@@ -11,7 +11,7 @@ const auth = async (req, res, next) => {
     if (!user) {
       return res.send('Please login');
     }
-
+    req.session.maxAge = new Date(Date.now() + 3600000);
     next();
   } catch (error) {}
 };

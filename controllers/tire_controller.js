@@ -3,15 +3,11 @@ import Tire from '../models/tire_model.js';
 export const getTires = async (req, res, next) => {
   try {
     const tires = await Tire.find({});
-    // .cursor()
-    // .eachAsync((doc) => {
-    //   doc.quantity = Math.floor(Math.random() * 100);
-    //   doc.save();
-    // })
-    // .then((data) => {});
 
     res.send(tires);
-  } catch (e) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 export const getTire = async (req, res, next) => {
@@ -23,7 +19,9 @@ export const getTire = async (req, res, next) => {
     ]);
 
     res.send(tire);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 export const addTire = async (req, res, next) => {
@@ -88,5 +86,7 @@ export const deleteTire = async (req, res, next) => {
     await Tire.findByIdAndDelete(req.params.id);
 
     res.send(tire);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };

@@ -18,7 +18,9 @@ export const getSeason = async (req, res, next) => {
     // ]);
 
     res.send(season);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 export const addSeason = async (req, res, next) => {
@@ -32,7 +34,9 @@ export const addSeason = async (req, res, next) => {
     const season = new Season(req.body);
     await season.save();
     res.send(season);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 export const updateSeason = async (req, res, next) => {
@@ -60,7 +64,9 @@ export const updateSeason = async (req, res, next) => {
     );
 
     res.send(newSeason);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 export const deleteSeason = async (req, res, next) => {
@@ -83,5 +89,7 @@ export const deleteSeason = async (req, res, next) => {
 
     await Season.findByIdAndDelete(req.params.id);
     res.send(season);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };

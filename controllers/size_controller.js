@@ -7,7 +7,9 @@ export const getSizes = async (req, res, next) => {
   try {
     const sizes = await Size.find();
     res.send(sizes);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 export const getSize = async (req, res, next) => {
@@ -15,7 +17,9 @@ export const getSize = async (req, res, next) => {
     const size = await Size.findById(req.params.id).populate('tires');
 
     res.send(size);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 export const addSize = async (req, res, next) => {
@@ -31,7 +35,9 @@ export const addSize = async (req, res, next) => {
     await size.save();
 
     res.send(size);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 export const updateSize = async (req, res, next) => {
@@ -57,7 +63,9 @@ export const updateSize = async (req, res, next) => {
     );
 
     res.send(newSize);
-  } catch {}
+  } catch {
+    res.status(500).send(error.message);
+  }
 };
 
 export const deleteSize = async (req, res, next) => {
@@ -81,5 +89,7 @@ export const deleteSize = async (req, res, next) => {
     await Size.findByIdAndDelete(req.params.id);
 
     res.send(size);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };

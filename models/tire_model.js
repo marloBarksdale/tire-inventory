@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import Season from './season_model.js';
-import Maufacturer from './manufacturer_model.js';
-import Size from './size_model.js';
 import Manufacturer from './manufacturer_model.js';
+import Season from './season_model.js';
+import Size from './size_model.js';
 
 const tireSchema = new mongoose.Schema(
   {
