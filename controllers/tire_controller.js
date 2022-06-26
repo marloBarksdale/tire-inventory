@@ -39,7 +39,9 @@ export const addTire = async (req, res, next) => {
 
     await tire.save();
     res.send(tire);
-  } catch (error) {}
+  } catch (error) {
+    res.status(406).send(error.message);
+  }
 };
 
 export const updateTire = async (req, res, next) => {
@@ -69,7 +71,7 @@ export const updateTire = async (req, res, next) => {
     );
     res.send(newTire);
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(406).send(error.message);
   }
 };
 
