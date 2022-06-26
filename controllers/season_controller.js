@@ -31,7 +31,7 @@ export const addSeason = async (req, res, next) => {
       return res.send(exists);
     }
 
-    const season = new Season(req.body);
+    const season = new Season({ ...req.body, creator: req.session.user._id });
     await season.save();
     res.send(season);
   } catch (error) {

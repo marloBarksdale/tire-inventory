@@ -24,7 +24,7 @@ export const getSize = async (req, res, next) => {
 
 export const addSize = async (req, res, next) => {
   try {
-    const size = new Size(req.body);
+    const size = new Size({ ...req.body, creator: req.session.user._id });
 
     const exists = await Size.findOne({ diameter: size.diameter });
 
