@@ -49,6 +49,12 @@ tireSchema.virtual('url').get(function () {
   return `/tire/${this._id}`;
 });
 
+tireSchema.index(
+  { name: 1, size: 1, manufacturer: 1, season: 1 },
+  { unique: true },
+);
+
+tireSchema.index({ creator: 1 });
 const Tire = mongoose.model('Tire', tireSchema);
 
 export default Tire;

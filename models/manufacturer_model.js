@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const manufacturerSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
   },
   { timestamps: true },
@@ -18,6 +18,8 @@ manufacturerSchema.virtual('tires', {
   localField: '_id',
   foreignField: 'manufacturer',
 });
+
+manufacturerSchema.index({ creator: 1 });
 
 const Manufacturer = mongoose.model('Manufacturer', manufacturerSchema);
 

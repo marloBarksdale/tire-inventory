@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 const seasonSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
   },
   { timestamps: true },
@@ -19,6 +19,7 @@ seasonSchema.virtual('tires', {
   ref: 'Tire',
 });
 
+seasonSchema.index({ creator: 1 });
 // seasonSchema.pre('save', async function (next) {
 //   let name = _.split(this.name, /[^a-zA-Z\d\s:]/).join(' ');
 

@@ -28,7 +28,7 @@ export const addSeason = async (req, res, next) => {
     const exists = await Season.findOne({ name: req.body.name });
 
     if (exists) {
-      return res.send(exists.url);
+      return res.send(exists);
     }
 
     const season = new Season(req.body);

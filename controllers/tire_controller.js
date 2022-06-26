@@ -2,7 +2,7 @@ import Tire from '../models/tire_model.js';
 
 export const getTires = async (req, res, next) => {
   try {
-    const tires = await Tire.find({});
+    const tires = await Tire.find();
 
     res.send(tires);
   } catch (error) {
