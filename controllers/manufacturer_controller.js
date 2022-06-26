@@ -42,7 +42,18 @@ export const updateManufacturer = async (req, res, next) => {
     if (exists) {
       return res.send('This manufacturer already exists: ' + exists.url);
     }
-    const manufacturer = await Manufacturer.findByIdAndUpdate(
+
+    const manufacturer = await Manufacturer.findOne({ _id: req.params.id });
+
+    if (!manufacturer) {
+      return res.status(404).send('Not found');
+    } else if (
+      manufacturer.creator.toString() !== req.session.user._id.toString()
+    ) {
+      return res.status(404).send('Update not allowed');
+    }
+
+    const newManufacturer = await Manufacturer.findByIdAndUpdate(
       req.params.id,
       {
         ...req.body,
@@ -50,7 +61,7 @@ export const updateManufacturer = async (req, res, next) => {
       { new: true },
     );
 
-    res.send(manufacturer);
+    res.send(newManufacturer);
   } catch (error) {}
 };
 

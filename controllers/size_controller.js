@@ -42,13 +42,21 @@ export const updateSize = async (req, res, next) => {
       return res.send('This size already exists: ' + exists.url);
     }
 
-    const size = await Size.findByIdAndUpdate(
+    const size = await Size.findOne({ _id: req.params.id });
+
+    if (!size) {
+      return res.status(404).send('Not found');
+    } else if (size.creator.toString() !== req.session.user._id.toString()) {
+      return res.status(403).send('Update not allowed');
+    }
+
+    const newSize = await Size.findByIdAndUpdate(
       req.params.id,
       { ...req.body },
       { new: true },
     );
 
-    res.send(size);
+    res.send(newSize);
   } catch {}
 };
 

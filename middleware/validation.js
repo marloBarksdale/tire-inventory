@@ -1,8 +1,15 @@
 import _ from 'lodash';
 import validator from 'validator';
+import mongoose from 'mongoose';
 
 const isValid = (schema) => {
   return (req, res, next) => {
+    if (req.params.id) {
+      if (!mongoose.isValidObjectId(req.params.id)) {
+        return res.send('Not found');
+      }
+    }
+
     if (req.body.name) {
       let name = _.split(req.body.name, /[^a-zA-Z\d\s:]/).join(' ');
 

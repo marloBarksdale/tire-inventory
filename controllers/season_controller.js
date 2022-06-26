@@ -45,17 +45,27 @@ export const updateSeason = async (req, res, next) => {
       return res.send('This season already exists: ' + exists.url);
     }
 
-    const season = await Season.findByIdAndUpdate(
+    const season = await Season.findById({ _id: req.params.id });
+
+    if (!season) {
+      return res.status(404).send('Not found');
+    } else if (season.creator.toString() !== req.session.user._id.toString()) {
+      return res.status(403).send('Update not allowed');
+    }
+
+    const newSeason = await Season.findByIdAndUpdate(
       req.params.id,
       { ...req.body },
       { new: true },
     );
+
+    res.send(newSeason);
   } catch (error) {}
 };
 
 export const deleteSeason = async (req, res, next) => {
   try {
-    const season = await Season.findOne({ _id: req.params.id });
+    const season = await Season.findById(req.params.id);
 
     if (!season) {
       return res.send('Not found!');

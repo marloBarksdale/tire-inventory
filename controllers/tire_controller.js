@@ -35,7 +35,7 @@ export const addTire = async (req, res, next) => {
       return res.send(exists.url);
     }
 
-    const tire = new Tire(req.body);
+    const tire = new Tire({ creator: req.session.user._id, ...req.body });
 
     await tire.save();
     res.send(tire);
@@ -52,20 +52,30 @@ export const updateTire = async (req, res, next) => {
       return res.send('This tire alreadys exists: ' + exists.url);
     }
 
-    const tire = await Tire.findByIdAndUpdate(
+    const tire = await Tire.findById(req.params.id);
+
+    if (!tire) {
+      return res.status(404).send('Not found');
+    } else if (tire.creator.toString() !== req.session.user._id.toString()) {
+      return res.status(403).send('Update not allowed');
+    }
+
+    const newTire = await Tire.findByIdAndUpdate(
       req.params.id,
       {
         ...req.body,
       },
-      { new: true },
+      { new: true, runValidators: true },
     );
-    res.send(tire);
-  } catch (error) {}
+    res.send(newTire);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 };
 
 export const deleteTire = async (req, res, next) => {
   try {
-    const tire = await Tire.findOne({ _id: req.params.id });
+    const tire = await Tire.findById(req.params.id);
 
     if (!tire) {
       return res.send('Not found');
