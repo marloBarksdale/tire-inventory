@@ -3,6 +3,10 @@ import bcrypt from 'bcrypt';
 import { store } from '../utils/init.js';
 
 export const postSignup = async (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/');
+  }
+
   try {
     const exists = await User.findOne({ email: req.body.email });
 
@@ -12,15 +16,27 @@ export const postSignup = async (req, res, next) => {
 
     const user = new User(req.body);
     await user.save();
-    res.send(user);
+    res.redirect('/');
   } catch (error) {}
 };
 
 export const getSignup = async (req, res, next) => {
-  res.render('signup');
+  if (req.session.user) {
+    return res.redirect('/');
+  }
+
+  res.render('auth/signup', {
+    pageTitle: 'Signup',
+    path: '/signup',
+    errorMessage: [],
+  });
 };
 
 export const getLogin = (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/');
+  }
+
   res.render('auth/login', {
     pageTitle: 'Login',
     path: '/login',
@@ -29,6 +45,10 @@ export const getLogin = (req, res, next) => {
 };
 
 export const postLogin = async (req, res, next) => {
+  if (req.session.user) {
+    return res.redirect('/');
+  }
+
   const user = await User.findOne({
     email: req.body.email,
   });
@@ -41,11 +61,9 @@ export const postLogin = async (req, res, next) => {
     return res.send('Cannot login');
   }
 
-  req.session.isLoggedIn = true;
   req.session.user = user;
-  req.user = user;
-  res.locals.isLoggedIn = 2;
-  res.send(user);
+
+  res.redirect('/');
 };
 
 export const postLogout = async (req, res, next) => {

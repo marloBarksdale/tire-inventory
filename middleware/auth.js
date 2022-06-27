@@ -1,6 +1,8 @@
 import User from '../models/user_model.js';
 
 const auth = async (req, res, next) => {
+  res.locals.isAuthenticated = req.session.user;
+
   if (!req.session.user) {
     return res.redirect('/login');
   }
@@ -12,6 +14,7 @@ const auth = async (req, res, next) => {
       return res.redirect('/login');
     }
     req.session.maxAge = new Date(Date.now() + 3600000);
+    res.locals.name = req.session.user.first_name;
     next();
   } catch (error) {}
 };

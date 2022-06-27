@@ -12,10 +12,11 @@ import { isValid } from '../middleware/validation.js';
 import validationSchema from '../middleware/validationSchemas.js';
 const tireRouter = express.Router();
 
-tireRouter.get('/', auth, getTires);
+tireRouter.get('/', getTires);
 tireRouter.get('/:id', getTire);
 tireRouter.post(
   '/add-tire',
+
   isValid(validationSchema.tire),
 
   addTire,
@@ -23,6 +24,7 @@ tireRouter.post(
 tireRouter.post('/delete-tire/:id', deleteTire);
 tireRouter.post(
   '/update-tire/:id',
+
   optionalUpdate,
   isValid(validationSchema.tire),
   updateTire,

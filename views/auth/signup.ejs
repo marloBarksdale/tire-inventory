@@ -7,32 +7,50 @@
    <%- include('../includes/navigation.ejs') %>
 
     <main> 
-        <%if(errorMessage) {%>
+        <%if(locals.errorMessage.length>0) {%>
         <div class="user-message user-message--error"><%=errorMessage%></div>
       <%}%>
         <form class="login-form" action="/signup" method="POST" novalidate>
             <div class="form-control">
+                <label for="first_name">First Name</label>
+                <input
+                
+                 type="text" 
+                 name="first_name" 
+                 id="first_name" 
+                 required>
+            </div> <div class="form-control">
+                <label for="last_name">Last Name</label>
+                <input
+                
+                 type="text" 
+                 name="last_name" 
+                 id="last_name" 
+                 required>
+            </div> <div class="form-control">
                 <label for="email">E-Mail</label>
                 <input
-                class="<%=validationErrors.find((e)=>e.param==='email')? 'invalid':''%> "
+                
                  type="email" 
                  name="email" 
                  id="email" 
-                 value = '<%=oldInput?oldInput.email:"" %>'required>
+                 required>
+            </div> <div class="form-control">
+                <label for="username">Username</label>
+                <input
+                
+                 type="text" 
+                 name="username" 
+                 id="username" 
+                 required>
             </div> 
-            <div class="form-control">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" value= '<%=oldInput?oldInput.name:"" %>'required>
-            </div>
+         
             <div class="form-control">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" required>
             </div>
-            <div class="form-control">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" name="confirmPassword" id="confirmPassword" required>
-            </div>
-            <input type="hidden" name="_csrf" value="<%=csrfToken%>" />
+         
+      
             <button class="btn" type="submit">Signup</button>
         </form>
     </main>

@@ -4,7 +4,11 @@ export const getTires = async (req, res, next) => {
   try {
     const tires = await Tire.find();
 
-    res.send(tires);
+    res.render('tire/tire_list', {
+      pageTitle: 'All Tires',
+      path: '/tires',
+      prods: tires,
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
