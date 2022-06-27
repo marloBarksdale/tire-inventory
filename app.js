@@ -11,11 +11,7 @@ app.use('/manufacturers', auth, manufacturerRouter);
 app.use('/sizes', auth, sizeRouter);
 app.use('/seasons', auth, seasonRouter);
 app.use(userRouter);
-
-app.use('/', (req, res) => {
-  res.render('index', { title: 'Tire Inventory' });
-});
-
+app.use('/', auth, tireRouter);
 // const run = async () => {
 //   const sizes = await Size.find();
 //   const manufacturers = await Manufacturer.find();

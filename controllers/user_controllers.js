@@ -21,7 +21,11 @@ export const getSignup = async (req, res, next) => {
 };
 
 export const getLogin = (req, res, next) => {
-  res.send('Login page');
+  res.render('auth/login', {
+    pageTitle: 'Login',
+    path: '/login',
+    errorMessage: [],
+  });
 };
 
 export const postLogin = async (req, res, next) => {
