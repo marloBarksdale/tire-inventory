@@ -12,10 +12,14 @@ import { isValid } from '../middleware/validation.js';
 import joiSchemas from '../middleware/validationSchemas.js';
 const userRouter = express.Router();
 
-userRouter.get('/login', getLogin);
-userRouter.get('/signup', getSignup);
-userRouter.post('/signup', isValid(joiSchemas.user), postSignup);
-userRouter.post('/login', postLogin);
+userRouter.route('/login').post(postLogin).get(getLogin);
+// userRouter.get('/login', getLogin);
+
+userRouter
+  .route('/signup')
+  .get(getSignup)
+  .post(isValid(joiSchemas.user), postSignup);
+// userRouter.post('/login', postLogin);
 userRouter.post('/logout', auth, postLogout);
 userRouter.post('/logoutAll', auth, postLogoutAll);
 

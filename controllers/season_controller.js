@@ -23,6 +23,9 @@ export const getSeason = async (req, res, next) => {
   }
 };
 
+export const getAddSeason = async (req, res, next) => {
+  res.render('create-form', { path: '', pageTitle: 'Create Season' });
+};
 export const addSeason = async (req, res, next) => {
   try {
     const exists = await Season.findOne({ name: req.body.name });

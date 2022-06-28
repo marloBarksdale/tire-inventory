@@ -30,10 +30,11 @@ const isValid = (schema) => {
     });
 
     if (error) {
-      const err = new Error();
-      err.message = error;
-      console.log(err);
-      next(error);
+      req.errors = error;
+      // const err = new Error();
+      // err.message = error;
+      // console.log(err);
+      // next(error);
     }
 
     next();

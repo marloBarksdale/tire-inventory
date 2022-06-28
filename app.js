@@ -51,9 +51,10 @@ app.use('/', auth, tireRouter);
 // };
 
 // run();
-app.use((error, req, res, next) => {
-  res.send(error);
-});
+
+// app.use((error, req, res, next) => {
+//   res.send(error);
+// });
 
 app.listen(process.env.PORT, () => {
   console.log(`Up on ${process.env.PORT}`);

@@ -1,10 +1,30 @@
 import User from '../models/user_model.js';
 import bcrypt from 'bcrypt';
 import { store } from '../utils/init.js';
+import _ from 'lodash';
 
 export const postSignup = async (req, res, next) => {
   if (req.session.user) {
     return res.redirect('/');
+  }
+
+  if (req.errors) {
+    console.log(req.errors._original);
+
+    const details = req.errors.details.map((detail) => {
+      return { message: _.startCase(detail.message), path: detail.path[0] };
+    });
+
+    console.log(details);
+
+    return res.status(422).render('auth/signup', {
+      path: '/signup',
+      pageTitle: 'Signup',
+      original: req.errors._original,
+      errorMessage: req.errors,
+      oldInput: { ...req.body },
+      validationErrors: req.errors,
+    });
   }
 
   try {

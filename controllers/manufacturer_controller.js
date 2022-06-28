@@ -11,12 +11,15 @@ export const getManufacturers = async (req, res, next) => {
 };
 
 export const getManufacturer = async (req, res, next) => {
-  console.log(req.params.id);
   try {
     const manufacturer = await Manufacturer.findById(req.params.id);
 
     res.send(manufacturer);
   } catch (error) {}
+};
+
+export const getAddManufacturer = async (req, res, next) => {
+  res.render('create-form', { path: '', pageTitle: 'Create Manufacturer' });
 };
 
 export const addManufacturer = async (req, res, next) => {
