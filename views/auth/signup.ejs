@@ -7,18 +7,19 @@
    <%- include('../includes/navigation.ejs') %>
 
     <main> 
-        <%if(locals.errorMessage.length>0) {%>
+        <%if(locals.errorMessage) {%>
         <div class="user-message user-message--error"><%=errorMessage%></div>
       <%}%>
         <form class="login-form" action="/signup" method="POST" novalidate>
             <div class="form-control">
                 <label for="first_name">First Name</label>
                 <input
-                
+              
                  type="text" 
                  name="first_name" 
                  id="first_name" 
                  value="<%=locals.original?original.first_name: '' %>"
+                 class="<%=locals.validationErrors?locals.validationErrors.some((e)=>e.path==='first_name') ?'invalid':'' :''%>"
                  required>
             </div> <div class="form-control">
                 <label for="last_name">Last Name</label>
@@ -27,6 +28,8 @@
                  type="text" 
                  name="last_name" 
                  id="last_name" 
+                 value="<%=locals.original?original.last_name: '' %>"
+                 class="<%=locals.validationErrors?locals.validationErrors.some((e)=>e.path==='last_name') ?'invalid':'' :''%>"
                  required>
             </div> <div class="form-control">
                 <label for="email">E-Mail</label>
@@ -34,7 +37,9 @@
                 
                  type="email" 
                  name="email" 
-                 id="email" 
+                 id="email"    
+                 value="<%=locals.original?original.email: '' %>"
+                 class="<%=locals.validationErrors?locals.validationErrors.some((e)=>e.path==='email') ?'invalid':'' :''%>"
                  required>
             </div> <div class="form-control">
                 <label for="username">Username</label>
@@ -43,12 +48,18 @@
                  type="text" 
                  name="username" 
                  id="username" 
+                 value="<%=locals.original?original.username: '' %>"
+                 class="<%=locals.validationErrors?locals.validationErrors.some((e)=>e.path==='username') ?'invalid':'' :''%>"
                  required>
             </div> 
          
             <div class="form-control">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" required>
+                <input type="password" 
+                name="password" 
+                id="password" 
+                class="<%=locals.validationErrors?locals.validationErrors.some((e)=>e.path==='password') ?'invalid':'' :''%>"
+                required>
             </div>
          
       

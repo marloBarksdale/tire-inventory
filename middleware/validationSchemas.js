@@ -1,10 +1,34 @@
+import Joi from 'joi';
 import joi from 'joi';
 import validator from 'validator';
+import User from '../models/user_model.js';
 
 const joiSchemas = {
   user: joi.object().keys({
     first_name: joi.string().trim().required(),
     last_name: joi.string().trim().required(),
+    email: joi
+      .string()
+      .email()
+      .message('Please enter a valid email')
+      .required()
+      .external(async (value) => {
+        const exists = await User.find({ email: value });
+
+        if (exists) {
+          throw new Joi.ValidationError(
+            'There was a problem signing up with that email',
+            [
+              {
+                message: 'There was a problem signing up with this email',
+                path: ['email'],
+                type: 'string.email',
+                context: { key: 'email', label: 'email', value },
+              },
+            ],
+          );
+        }
+      }),
     username: joi
       .string()
       .trim()
@@ -16,7 +40,7 @@ const joiSchemas = {
         }
       })
       .required(),
-    email: joi.string().email().required(),
+
     password: joi.string().custom((value, helper) => {
       if (
         !validator.isStrongPassword(value, {

@@ -9,30 +9,35 @@ export const postSignup = async (req, res, next) => {
   }
 
   if (req.errors) {
-    console.log(req.errors._original);
-
     const details = req.errors.details.map((detail) => {
-      return { message: _.startCase(detail.message), path: detail.path[0] };
+      return {
+        message: _.upperFirst(_.toLower(_.startCase(detail.message))),
+        path: detail.path[0],
+      };
     });
-
-    console.log(details);
 
     return res.status(422).render('auth/signup', {
       path: '/signup',
       pageTitle: 'Signup',
       original: req.errors._original,
-      errorMessage: req.errors,
-      oldInput: { ...req.body },
-      validationErrors: req.errors,
+      errorMessage: details[0].message,
+
+      validationErrors: details,
     });
   }
 
   try {
-    const exists = await User.findOne({ email: req.body.email });
+    // const exists = await User.findOne({ email: req.body.email });
 
-    if (exists) {
-      return res.send('There was an error trying to sign up with that email');
-    }
+    // if (exists) {
+    //   console.log('here');
+    //   return res.status(422).render('auth/signup', {
+    //     path: '/signup',
+    //     pageTitle: 'Signup',
+    //     // original: req.errors._original,
+    //     errorMessage: 'There was a problem trying to sign up with that email',
+    //   });
+    // }
 
     const user = new User(req.body);
     await user.save();
@@ -48,7 +53,6 @@ export const getSignup = async (req, res, next) => {
   res.render('auth/signup', {
     pageTitle: 'Signup',
     path: '/signup',
-    errorMessage: [],
   });
 };
 

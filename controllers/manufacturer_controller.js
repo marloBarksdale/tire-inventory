@@ -19,11 +19,29 @@ export const getManufacturer = async (req, res, next) => {
 };
 
 export const getAddManufacturer = async (req, res, next) => {
-  res.render('create-form', { path: '', pageTitle: 'Create Manufacturer' });
+  res.render('create-form', {
+    path: '',
+    pageTitle: 'Create Manufacturer',
+    label: 'Manufacturer Name',
+  });
 };
 
 export const addManufacturer = async (req, res, next) => {
   try {
+    if (req.errors) {
+      const details = req.errors.details.map((detail) => {
+        return { message: _.upperFirst(detail.message), path: detail.path[0] };
+      });
+      console.log(details);
+      return res.status(422).render('create-form', {
+        path: '',
+        pageTitle: 'Create Manufacturer',
+        errorMessage: details[0].message,
+        original: req.errors._original,
+        label: 'Manufacturer Name',
+      });
+    }
+
     const exists = await Manufacturer.findOne({ name: req.body.name });
 
     if (exists) {

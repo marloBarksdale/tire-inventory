@@ -3,7 +3,7 @@ import validator from 'validator';
 import mongoose from 'mongoose';
 
 const isValid = (schema) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     if (req.params.id) {
       if (!mongoose.isValidObjectId(req.params.id)) {
         return res.send('Not found');
@@ -23,18 +23,18 @@ const isValid = (schema) => {
         });
       }
     }
-
-    const { error, value } = schema.validate(req.body, {
-      abortEarly: false,
-      stripUnknown: true,
-    });
-
-    if (error) {
-      req.errors = error;
-      // const err = new Error();
-      // err.message = error;
-      // console.log(err);
-      // next(error);
+    try {
+      const { error, value } = await schema.validateAsync(req.body, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
+      console.log(error, value);
+    } catch (error) {
+      console.log(error.details);
+      if (error) {
+        req.errors = error;
+        req.errors._original = { ...req.body };
+      }
     }
 
     next();

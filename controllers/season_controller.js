@@ -24,14 +24,29 @@ export const getSeason = async (req, res, next) => {
 };
 
 export const getAddSeason = async (req, res, next) => {
-  res.render('create-form', { path: '', pageTitle: 'Create Season' });
+  res.render('create-form', {
+    path: '',
+    pageTitle: 'Create Season',
+    label: 'Create Season',
+  });
 };
+
 export const addSeason = async (req, res, next) => {
   try {
+    if (req.errors) {
+      return res.render('create-form', {
+        path: '',
+        pageTitle: 'Create Season',
+
+        original: req.errors._original,
+        label: 'Create Season',
+      });
+    }
+
     const exists = await Season.findOne({ name: req.body.name });
 
     if (exists) {
-      return res.send(exists);
+      return res.send(exists.url);
     }
 
     const season = new Season({ ...req.body, creator: req.session.user._id });
