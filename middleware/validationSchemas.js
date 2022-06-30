@@ -107,21 +107,28 @@ const joiSchemas = {
   }),
 
   size: joi.object({
-    diameter: joi.number().min(16).max(45),
-    // .message('Diameter must be between 16 and 45 inches').external(async (value) => {
-    //   const exists = await Size.findOne({ diameter: value });
+    diameter: joi
+      .number()
+      .min(16)
+      .max(45)
+      .messages({
+        'number.min': 'Must be between 16 and 45',
+        'number.max': 'Must be between 16 and 45',
+      })
+      .external(async (value) => {
+        const exists = await Size.findOne({ diameter: value });
 
-    //   if (exists) {
-    //     throw new Joi.ValidationError('That size is already in use', [
-    //       {
-    //         message: 'That size is already in use',
-    //         path: ['diameter'],
-    //         type: 'string.name',
-    //         context: { key: 'diameter', label: 'name', value },
-    //       },
-    //     ]);
-    //   }
-    // }),
+        if (exists) {
+          throw new Joi.ValidationError('That size is already in use', [
+            {
+              message: 'That size is already in use',
+              path: ['diameter'],
+              type: 'string.name',
+              context: { key: 'diameter', label: 'diameter', value },
+            },
+          ]);
+        }
+      }),
   }),
 
   season: joi.object().keys({

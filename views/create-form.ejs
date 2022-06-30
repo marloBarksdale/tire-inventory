@@ -12,10 +12,21 @@
           <%}%>
 
         <form class="product-form"  method="POST" action="" >
+          
+          <% if(locals.size) {%>
+            <div class="form-control">
+                <label for="name">Enter diameter</label>
+                <input type="number" name="diameter" id="diameter" value="<%=locals.original? original.diameter : '' %>" class=" <%=locals.original? 'invalid':''%>">
+            </div>   
+         <% }else{%>
             <div class="form-control">
                 <label for="name"><%=locals.label?label:'Name'%></label>
                 <input type="text" name="name" id="name" value="<%=locals.original? original.name : '' %>" class=" <%=locals.original? 'invalid':''%>">
-            </div>       
+            </div>    
+          <%}%>
+          
+          
+           
             <button class="btn" type="submit">Submit</button>
         </form>
     </main>

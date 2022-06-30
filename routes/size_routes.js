@@ -5,6 +5,7 @@ import {
   addSize,
   deleteSize,
   updateSize,
+  getAddSize,
 } from '../controllers/size_controller.js';
 import { isValid } from '../middleware/validation.js';
 import validationSchemas from '../middleware/validationSchemas.js';
@@ -13,7 +14,7 @@ const sizeRouter = express.Router();
 sizeRouter
   .route('/add-size')
   .post(isValid(validationSchemas.size), addSize)
-  .get();
+  .get(getAddSize);
 sizeRouter.post(
   '/update-size/:id',
   isValid(validationSchemas.size),

@@ -22,15 +22,33 @@ export const getSize = async (req, res, next) => {
   }
 };
 
+export const getAddSize = async (req, res, next) => {
+  res.render('create-form', {
+    path: '',
+    pageTitle: 'Create Size',
+    label: 'Create Size',
+    size: true,
+  });
+};
+
 export const addSize = async (req, res, next) => {
   try {
-    const size = new Size({ ...req.body, creator: req.session.user._id });
+    if (req.errors) {
+      const details = req.errors.details.map((detail) => {
+        return { message: _.upperFirst(detail.message), path: detail.path[0] };
+      });
 
-    const exists = await Size.findOne({ diameter: size.diameter });
-
-    if (exists) {
-      return res.send(exists.url);
+      return res.render('create-form', {
+        path: '',
+        pageTitle: 'Create Size',
+        errorMessage: details[0].message,
+        original: req.errors._original,
+        label: 'Create Size',
+        size: true,
+      });
     }
+
+    const size = new Size({ ...req.body, creator: req.session.user._id });
 
     await size.save();
 
