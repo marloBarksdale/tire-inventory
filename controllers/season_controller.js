@@ -34,20 +34,24 @@ export const getAddSeason = async (req, res, next) => {
 export const addSeason = async (req, res, next) => {
   try {
     if (req.errors) {
+      const details = req.errors.details.map((detail) => {
+        return { message: _.upperFirst(detail.message), path: detail.path[0] };
+      });
+
       return res.render('create-form', {
         path: '',
         pageTitle: 'Create Season',
-
+        errorMessage: details[0].message,
         original: req.errors._original,
         label: 'Create Season',
       });
     }
 
-    const exists = await Season.findOne({ name: req.body.name });
+    // const exists = await Season.findOne({ name: req.body.name });
 
-    if (exists) {
-      return res.send(exists.url);
-    }
+    // if (exists) {
+    //   return res.send(exists.url);
+    // }
 
     const season = new Season({ ...req.body, creator: req.session.user._id });
     await season.save();

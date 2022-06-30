@@ -42,11 +42,11 @@ export const addManufacturer = async (req, res, next) => {
       });
     }
 
-    const exists = await Manufacturer.findOne({ name: req.body.name });
+    // const exists = await Manufacturer.findOne({ name: req.body.name });
 
-    if (exists) {
-      return res.send(exists.url);
-    }
+    // if (exists) {
+    //   return res.send(exists.url);
+    // }
 
     const manufacturer = await new Manufacturer({
       ...req.body,

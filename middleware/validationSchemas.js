@@ -1,6 +1,9 @@
 import Joi from 'joi';
 import joi from 'joi';
 import validator from 'validator';
+import Manufacturer from '../models/manufacturer_model.js';
+import Season from '../models/season_model.js';
+import Size from '../models/size_model.js';
 import User from '../models/user_model.js';
 
 const joiSchemas = {
@@ -14,7 +17,7 @@ const joiSchemas = {
       .required()
       .external(async (value) => {
         const exists = await User.findOne({ email: value });
-        console.log(exists);
+
         if (exists) {
           throw new Joi.ValidationError(
             'There was a problem signing up with that email',
@@ -86,16 +89,39 @@ const joiSchemas = {
       .string()
       .min(3)
       .message('Must be at least three characters')
-      .required(),
+      .required()
+      .external(async (value) => {
+        const exists = await Manufacturer.findOne({ name: value });
+
+        if (exists) {
+          throw new Joi.ValidationError('That name is already in use', [
+            {
+              message: 'That name is already in use',
+              path: ['name'],
+              type: 'string.name',
+              context: { key: 'name', label: 'name', value },
+            },
+          ]);
+        }
+      }),
   }),
 
   size: joi.object({
-    diameter: joi
-      .number()
-      .min(16)
-      .message('hello')
-      .max(45)
-      .message('Diameter must be between 16 and 45 inches'),
+    diameter: joi.number().min(16).max(45),
+    // .message('Diameter must be between 16 and 45 inches').external(async (value) => {
+    //   const exists = await Size.findOne({ diameter: value });
+
+    //   if (exists) {
+    //     throw new Joi.ValidationError('That size is already in use', [
+    //       {
+    //         message: 'That size is already in use',
+    //         path: ['diameter'],
+    //         type: 'string.name',
+    //         context: { key: 'diameter', label: 'name', value },
+    //       },
+    //     ]);
+    //   }
+    // }),
   }),
 
   season: joi.object().keys({
@@ -103,7 +129,21 @@ const joiSchemas = {
       .string()
       .min(3)
       .message('Must be at least three characters')
-      .required(),
+      .required()
+      .external(async (value) => {
+        const exists = await Season.findOne({ name: value });
+
+        if (exists) {
+          throw new Joi.ValidationError('That name is already in use', [
+            {
+              message: 'That name is already in use',
+              path: ['name'],
+              type: 'string.name',
+              context: { key: 'name', label: 'name', value },
+            },
+          ]);
+        }
+      }),
   }),
 };
 
