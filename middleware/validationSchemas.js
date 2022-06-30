@@ -13,8 +13,8 @@ const joiSchemas = {
       .message('Please enter a valid email')
       .required()
       .external(async (value) => {
-        const exists = await User.find({ email: value });
-
+        const exists = await User.findOne({ email: value });
+        console.log(exists);
         if (exists) {
           throw new Joi.ValidationError(
             'There was a problem signing up with that email',

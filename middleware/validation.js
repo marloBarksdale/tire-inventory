@@ -23,18 +23,16 @@ const isValid = (schema) => {
         });
       }
     }
+
     try {
       const { error, value } = await schema.validateAsync(req.body, {
         abortEarly: false,
         stripUnknown: true,
       });
-      console.log(error, value);
     } catch (error) {
-      console.log(error.details);
-      if (error) {
-        req.errors = error;
-        req.errors._original = { ...req.body };
-      }
+      req.errors = error;
+      req.errors._original = { ...req.body };
+      console.log(req.errors);
     }
 
     next();
