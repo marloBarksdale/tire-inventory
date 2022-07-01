@@ -32,7 +32,6 @@ const isValid = (schema) => {
     } catch (error) {
       req.errors = error;
       req.errors._original = { ...req.body };
-      console.log(req.errors.details);
     }
 
     next();

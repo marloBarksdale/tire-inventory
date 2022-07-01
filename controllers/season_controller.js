@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import _ from 'lodash';
 import Season from '../models/season_model.js';
 import Tire from '../models/tire_model.js';
@@ -61,22 +62,49 @@ export const addSeason = async (req, res, next) => {
   }
 };
 
+export const getUpdateSeason = async (req, res, next) => {
+  const season = await Season.findById(req.params.id);
+
+  res.render('create-form', {
+    path: '',
+    pageTitle: 'Update Season ',
+
+    original: season,
+    label: ' Season Name',
+  });
+};
+
 export const updateSeason = async (req, res, next) => {
   try {
-    let name = req.body.name;
-
-    const exists = await Season.findOne({ name });
-
-    if (exists) {
-      return res.send('This season already exists: ' + exists.url);
-    }
-
     const season = await Season.findById({ _id: req.params.id });
 
     if (!season) {
       return res.status(404).send('Not found');
     } else if (season.creator.toString() !== req.session.user._id.toString()) {
-      return res.status(403).send('Update not allowed');
+      req.errors = new Joi.ValidationError('Not authorized', [
+        {
+          message: 'You do not have the authority to update this Season',
+          path: ['name'],
+          type: 'string.name',
+          context: { key: 'name', label: 'name' },
+        },
+      ]);
+
+      req.errors._original = season;
+    }
+
+    if (req.errors) {
+      const details = req.errors.details.map((detail) => {
+        return { message: _.upperFirst(detail.message), path: detail.path[0] };
+      });
+
+      return res.status(422).render('create-form', {
+        path: '',
+        pageTitle: 'Update Season',
+        errorMessage: details[0].message,
+        original: req.errors._original,
+        label: 'Season Name',
+      });
     }
 
     const newSeason = await Season.findByIdAndUpdate(

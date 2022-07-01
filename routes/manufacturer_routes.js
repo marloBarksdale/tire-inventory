@@ -6,6 +6,7 @@ import {
   deleteManufacturer,
   updateManufacturer,
   getAddManufacturer,
+  getUpdateManufacturer,
 } from '../controllers/manufacturer_controller.js';
 import { isValid } from '../middleware/validation.js';
 import joiSchemas from '../middleware/validationSchemas.js';
@@ -17,11 +18,10 @@ manufacturerRouter
   .post(isValid(joiSchemas.manufacturer), addManufacturer)
   .get(getAddManufacturer);
 
-manufacturerRouter.post(
-  '/update-manufacturer/:id',
-  isValid(joiSchemas.manufacturer),
-  updateManufacturer,
-);
+manufacturerRouter
+  .route('/update-manufacturer/:id')
+  .post(isValid(joiSchemas.manufacturer), updateManufacturer)
+  .get(getUpdateManufacturer);
 manufacturerRouter.post('/delete-manufacturer/:id', deleteManufacturer);
 manufacturerRouter.get('/:id', getManufacturer);
 manufacturerRouter.get('/', getManufacturers);

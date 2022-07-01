@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import _ from 'lodash';
 import Manufacturer from '../models/manufacturer_model.js';
 import Tire from '../models/tire_model.js';
@@ -42,12 +43,6 @@ export const addManufacturer = async (req, res, next) => {
       });
     }
 
-    // const exists = await Manufacturer.findOne({ name: req.body.name });
-
-    // if (exists) {
-    //   return res.send(exists.url);
-    // }
-
     const manufacturer = await new Manufacturer({
       ...req.body,
       creator: req.session.user._id,
@@ -57,13 +52,20 @@ export const addManufacturer = async (req, res, next) => {
   } catch (error) {}
 };
 
+export const getUpdateManufacturer = async (req, res, next) => {
+  const manufacturer = await Manufacturer.findById(req.params.id);
+
+  res.render('create-form', {
+    path: '',
+    pageTitle: 'Update Manufacturer',
+
+    original: manufacturer,
+    label: 'Manufacturer Name',
+  });
+};
+
 export const updateManufacturer = async (req, res, next) => {
   try {
-    const exists = await Manufacturer.findOne({ name: req.body.name });
-    if (exists) {
-      return res.send('This manufacturer already exists: ' + exists.url);
-    }
-
     const manufacturer = await Manufacturer.findOne({ _id: req.params.id });
 
     if (!manufacturer) {
@@ -71,7 +73,30 @@ export const updateManufacturer = async (req, res, next) => {
     } else if (
       manufacturer.creator.toString() !== req.session.user._id.toString()
     ) {
-      return res.status(404).send('Update not allowed');
+      req.errors = new Joi.ValidationError('Not authorized', [
+        {
+          message: 'You do not have the authority to update this manufacturer',
+          path: ['name'],
+          type: 'string.name',
+          context: { key: 'name', label: 'name' },
+        },
+      ]);
+
+      req.errors._original = manufacturer;
+    }
+
+    if (req.errors) {
+      const details = req.errors.details.map((detail) => {
+        return { message: _.upperFirst(detail.message), path: detail.path[0] };
+      });
+
+      return res.status(422).render('create-form', {
+        path: '',
+        pageTitle: 'Update Manufacturer',
+        errorMessage: details[0].message,
+        original: req.errors._original,
+        label: 'Manufacturer Name',
+      });
     }
 
     const newManufacturer = await Manufacturer.findByIdAndUpdate(
