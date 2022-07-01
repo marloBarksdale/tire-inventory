@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import _ from 'lodash';
 import { SystemZone } from 'luxon';
 import Size from '../models/size_model.js';
@@ -58,20 +59,50 @@ export const addSize = async (req, res, next) => {
   }
 };
 
+export const getUpdateSize = async (req, res, next) => {
+  const size = await Size.findById(req.params.id);
+
+  res.render('create-form', {
+    path: '',
+    pageTitle: 'Update Size ',
+    size: true,
+    original: size,
+    label: ' Diameter',
+  });
+};
+
 export const updateSize = async (req, res, next) => {
   try {
-    const exists = await Size.findOne({ diameter: req.body.diameter });
-
-    if (exists) {
-      return res.send('This size already exists: ' + exists.url);
-    }
-
     const size = await Size.findOne({ _id: req.params.id });
 
     if (!size) {
       return res.status(404).send('Not found');
     } else if (size.creator.toString() !== req.session.user._id.toString()) {
-      return res.status(403).send('Update not allowed');
+      req.errors = new Joi.ValidationError('Not authorized', [
+        {
+          message: 'You do not have the authority to update this Size',
+          path: ['diameter'],
+
+          context: { key: 'diameter', label: 'diameter' },
+        },
+      ]);
+
+      req.errors._original = size;
+    }
+
+    if (req.errors) {
+      const details = req.errors.details.map((detail) => {
+        return { message: _.upperFirst(detail.message), path: detail.path[0] };
+      });
+
+      return res.status(422).render('create-form', {
+        path: '',
+        pageTitle: 'Update Size',
+        errorMessage: details[0].message,
+        original: req.errors._original,
+        size: true,
+        label: 'Diameter',
+      });
     }
 
     const newSize = await Size.findByIdAndUpdate(
@@ -81,7 +112,7 @@ export const updateSize = async (req, res, next) => {
     );
 
     res.send(newSize);
-  } catch {
+  } catch (error) {
     res.status(500).send(error.message);
   }
 };

@@ -6,6 +6,7 @@ import {
   deleteSize,
   updateSize,
   getAddSize,
+  getUpdateSize,
 } from '../controllers/size_controller.js';
 import { isValid } from '../middleware/validation.js';
 import validationSchemas from '../middleware/validationSchemas.js';
@@ -15,11 +16,10 @@ sizeRouter
   .route('/add-size')
   .post(isValid(validationSchemas.size), addSize)
   .get(getAddSize);
-sizeRouter.post(
-  '/update-size/:id',
-  isValid(validationSchemas.size),
-  updateSize,
-);
+sizeRouter
+  .route('/update-size/:id')
+  .post(isValid(validationSchemas.size), updateSize)
+  .get(getUpdateSize);
 sizeRouter.post('/delete-size/:id', deleteSize);
 
 sizeRouter.get('/:id', getSize);

@@ -119,9 +119,9 @@ const joiSchemas = {
         const exists = await Size.findOne({ diameter: value });
 
         if (exists) {
-          throw new Joi.ValidationError('That size is already in use', [
+          throw new Joi.ValidationError('That size already exists.', [
             {
-              message: 'That size is already in use',
+              message: 'That size already exists.',
               path: ['diameter'],
               type: 'string.name',
               context: { key: 'diameter', label: 'diameter', value },
