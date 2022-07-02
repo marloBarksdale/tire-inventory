@@ -7,7 +7,11 @@ import Tire from '../models/tire_model.js';
 
 export const getTires = async (req, res, next) => {
   try {
-    const tires = await Tire.find();
+    const match = {};
+    if (req.query.mine) {
+      match.creator = req.session.user._id;
+    }
+    const tires = await Tire.find(match);
 
     res.render('tire/tire_list', {
       pageTitle: 'All Tires',
@@ -34,7 +38,7 @@ export const getTire = async (req, res, next) => {
 };
 
 export const getAddTire = async (req, res, next) => {
-  const sizes = await Size.find();
+  const sizes = await Size.find().sort({ diameter: 1 });
   const manufacturers = await Manufacturer.find();
   const seasons = await Season.find();
   const tires = await Tire.find();
@@ -53,7 +57,7 @@ export const addTire = async (req, res, next) => {
 
   try {
     const exists = await Tire.findOne({ name, manufacturer, season, size });
-    const sizes = await Size.find();
+    const sizes = await Size.find().sort({ diameter: 1 });
     const manufacturers = await Manufacturer.find();
     const seasons = await Season.find();
 
@@ -94,7 +98,7 @@ export const addTire = async (req, res, next) => {
 
 export const getUpdateTire = async (req, res, next) => {
   try {
-    const sizes = await Size.find();
+    const sizes = await Size.find().sort({ diameter: 1 });
     const manufacturers = await Manufacturer.find();
     const seasons = await Season.find();
     const tire = await Tire.findById(req.params.id);
@@ -116,7 +120,7 @@ export const updateTire = async (req, res, next) => {
   try {
     const { name, manufacturer, season, size } = req.body;
     const exists = await Tire.findOne({ name, manufacturer, season, size });
-    const sizes = await Size.find();
+    const sizes = await Size.find().sort({ diameter: 1 });
     const manufacturers = await Manufacturer.find();
     const seasons = await Season.find();
     const tire = await Tire.findById(req.params.id);

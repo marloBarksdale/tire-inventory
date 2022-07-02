@@ -5,7 +5,11 @@ import Tire from '../models/tire_model.js';
 
 export const getManufacturers = async (req, res, next) => {
   try {
-    const manufacturers = await Manufacturer.find();
+    const match = {};
+    if (req.query.mine) {
+      match.creator = req.session.user._id;
+    }
+    const manufacturers = await Manufacturer.find(match);
 
     res.send(manufacturers);
   } catch (error) {}

@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
+
+.navbar-nav li:hover>.dropdown-menu {
+  display: block;
+}
+
+
+
 body {
   padding: 0;
   margin: 0;
