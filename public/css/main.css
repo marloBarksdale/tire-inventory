@@ -5,10 +5,17 @@
 }
 
 
-.navbar-nav li:hover>.dropdown-menu {
+/* .navbar-nav li:hover>.dropdown-menu {
   display: block;
 }
+ */
 
+
+
+
+.navbar-nav.left {
+  margin-left: auto;
+}
 
 
 body {
@@ -19,7 +26,7 @@ body {
 
 main {
   padding: 1rem;
-  margin: auto;
+  margin: 0;
 }
 
 form {
@@ -174,6 +181,8 @@ form {
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: stretch;
+
+  margin: auto;
 }
 
 .card {
@@ -261,6 +270,8 @@ form {
 .pagination {
   margin-top: 2rem;
   text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 .pagination a {
@@ -289,5 +300,24 @@ form {
 
   .user-message {
     width: 30rem;
+  }
+}
+
+@media all and (min-width: 992px) {
+  .navbar .nav-item .dropdown-menu {
+    display: none;
+
+  }
+
+  .navbar .nav-item:hover .nav-link {}
+
+  .navbar .nav-item:hover .dropdown-menu {
+    display: block;
+
+  }
+
+  .navbar .nav-item .dropdown-menu {
+    margin-top: 0;
+
   }
 }

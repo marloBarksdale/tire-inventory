@@ -8,7 +8,6 @@ import {
   getUpdateTire,
   updateTire,
 } from '../controllers/tire_controller.js';
-import auth from '../middleware/auth.js';
 import { optionalUpdate } from '../middleware/update-middleware.js';
 import { isValid } from '../middleware/validation.js';
 import validationSchema from '../middleware/validationSchemas.js';
@@ -23,7 +22,14 @@ tireRouter
   )
   .get(getAddTire);
 tireRouter.post('/delete-tire/:id', deleteTire);
-
+tireRouter.get(
+  '/mine',
+  (req, res, next) => {
+    req.params.id = req.session.user._id;
+    next();
+  },
+  getTires,
+);
 tireRouter
   .route('/update-tire/:id')
   .post(optionalUpdate, isValid(validationSchema.tire), updateTire)

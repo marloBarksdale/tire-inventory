@@ -1,4 +1,5 @@
 import auth from './middleware/auth.js';
+import indexRouter from './routes/index.js';
 import manufacturerRouter from './routes/manufacturer_routes.js';
 import seasonRouter from './routes/season_routes.js';
 import sizeRouter from './routes/size_routes.js';
@@ -11,7 +12,7 @@ app.use('/manufacturers', auth, manufacturerRouter);
 app.use('/sizes', auth, sizeRouter);
 app.use('/seasons', auth, seasonRouter);
 app.use(userRouter);
-app.use('/', auth, tireRouter);
+app.use('/', auth, indexRouter);
 // const run = async () => {
 //   const sizes = await Size.find();
 //   const manufacturers = await Manufacturer.find();

@@ -5,18 +5,38 @@ import Season from '../models/season_model.js';
 import Size from '../models/size_model.js';
 import Tire from '../models/tire_model.js';
 
+export const index = async (req, res, next) => {
+  res.render('index', {
+    pageTitle: 'All Tires',
+    path: '/tires',
+  });
+};
 export const getTires = async (req, res, next) => {
   try {
     const match = {};
-    if (req.query.mine) {
-      match.creator = req.session.user._id;
+    if (req.params.id) {
+      match.creator = req.params.id;
     }
-    const tires = await Tire.find(match);
+
+    console.log(match.creator);
+    const page = parseInt(req.query.page) || 1;
+    const tires = await Tire.find(match)
+      .populate(['manufacturer', 'season', 'size'])
+      .skip((page - 1) * 6)
+      .limit(6);
+
+    const count = await Tire.find(match).countDocuments();
 
     res.render('tire/tire_list', {
       pageTitle: 'All Tires',
       path: '/tires',
       prods: tires,
+      currentPage: page,
+      hasNext: 6 * page < count,
+      hasPrevious: page > 1,
+      nextPage: page + 1,
+      previousPage: page - 1,
+      lastPage: Math.ceil(count / 6),
     });
   } catch (error) {
     res.status(500).send(error.message);
@@ -68,6 +88,7 @@ export const addTire = async (req, res, next) => {
           path: '',
         },
       ]);
+      req.errors._original = req.body;
     }
 
     if (req.errors) {
@@ -80,6 +101,8 @@ export const addTire = async (req, res, next) => {
         pageTitle: 'Create Tire',
         errorMessage: details[0].message,
         tire,
+        original: req.errors._original,
+        validationErrors: details,
         label: 'Create Tire',
         seasons,
         manufacturers,
