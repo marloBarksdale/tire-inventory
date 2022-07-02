@@ -1,0 +1,87 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/forms.css">
+<link rel="stylesheet" href="/css/auth.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <%if(locals.errorMessage) {%>
+            <div class="user-message user-message--error"><%=errorMessage%></div>
+          <%}%>
+
+        <form class="product-form"  method="POST" action="" >
+          
+        
+            <div class="form-control">
+                <label for="name">Name</label>
+          <input type="text" id="name" name="name" value="<%=locals.original?original.name:""%>" class="<%=locals.validationErrors?locals.validationErrors.some((e)=>e.path==='name') ?'invalid':'' :''%>">
+            </div>   
+     
+            <div class="form-control">
+                <label for="manufacturer">Manufacturer</label>
+                <select id="manufacturer" name="manufacturer" required>
+                    <%manufacturers.forEach((manufacturer)=>{%>
+
+                           <option value="<%=manufacturer._id%>" <%=locals.tire? locals.tire.manufacturer.toString()==manufacturer._id.toString()?'selected':'' :''%>><%=manufacturer.name%></option>
+
+                    <%})%>
+
+                </select>
+
+            </div>  
+            
+            <div class="form-control">
+                <label for="season">Season</label>
+                <select id="season" name="season" required>
+                    <%seasons.forEach((season)=>{%>
+
+                           <option value="<%=season._id%>" <%=locals.tire? locals.tire.season.toString()==season._id.toString()?'selected':'' :''%>><%=season.name%></option>
+
+                    <%})%>
+
+                </select>
+
+            </div>  
+            
+            
+            
+            
+            <div class="form-control">
+                <label for="size">Size</label>
+                <select id="size" name="size" required>
+                    <%sizes.forEach((size)=>{%>
+
+                           <option value="<%=size._id%>" <%=locals.tire? locals.tire.size.toString()==size._id.toString()?'selected':'' :''%>><%=size.diameter%></option>
+
+                    <%})%>
+
+                </select>
+
+            </div>  
+
+
+          
+
+
+          
+
+            <div class="form-control">
+                <label for="name">Price</label>
+                <input type="text" name="price" id="price" value="<%=locals.original? original.price : '' %>" 
+                class="<%=locals.validationErrors?validationErrors.some((e)=>e.path==='price')? 'invalid':'':''%>">
+            </div>  
+            
+            <!-- <div class="form-control">
+                <label for="name"><%=locals.label?label:'Name'%></label>
+                <input type="text" name="name" id="name" value="<%=locals.original? original.name : '' %>" class="<%=locals.errorMessage? 'invalid':''%>">
+            </div>     -->
+
+          
+          
+           
+            <button class="btn" type="submit">Submit</button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

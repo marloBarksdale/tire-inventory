@@ -2,8 +2,10 @@ import express from 'express';
 import {
   addTire,
   deleteTire,
+  getAddTire,
   getTire,
   getTires,
+  getUpdateTire,
   updateTire,
 } from '../controllers/tire_controller.js';
 import auth from '../middleware/auth.js';
@@ -19,15 +21,13 @@ tireRouter
 
     addTire,
   )
-  .get();
+  .get(getAddTire);
 tireRouter.post('/delete-tire/:id', deleteTire);
-tireRouter.post(
-  '/update-tire/:id',
 
-  optionalUpdate,
-  isValid(validationSchema.tire),
-  updateTire,
-);
+tireRouter
+  .route('/update-tire/:id')
+  .post(optionalUpdate, isValid(validationSchema.tire), updateTire)
+  .get(getUpdateTire);
 tireRouter.get('/:id', getTire);
 tireRouter.get('/', getTires);
 
