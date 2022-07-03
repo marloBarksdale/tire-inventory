@@ -14,11 +14,12 @@ export const index = async (req, res, next) => {
 export const getTires = async (req, res, next) => {
   try {
     const match = {};
+    const owner = {};
     if (req.params.id) {
       match.creator = req.params.id;
+      owner.creator = true;
     }
 
-    console.log(match.creator);
     const page = parseInt(req.query.page) || 1;
     const tires = await Tire.find(match)
       .populate(['manufacturer', 'season', 'size'])
@@ -31,6 +32,7 @@ export const getTires = async (req, res, next) => {
       pageTitle: 'All Tires',
       path: '/tires',
       prods: tires,
+      owner,
       currentPage: page,
       hasNext: 6 * page < count,
       hasPrevious: page > 1,

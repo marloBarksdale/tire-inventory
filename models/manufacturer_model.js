@@ -10,7 +10,7 @@ const manufacturerSchema = new mongoose.Schema(
 );
 
 manufacturerSchema.virtual('url').get(function () {
-  return `/manufacturer/${this._id}`;
+  return `/manufacturers/${this._id}`;
 });
 
 manufacturerSchema.virtual('tires', {

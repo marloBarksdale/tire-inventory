@@ -46,7 +46,7 @@ const tireSchema = new mongoose.Schema(
 );
 
 tireSchema.virtual('url').get(function () {
-  return `/tire/${this._id}`;
+  return `/tires/${this._id}`;
 });
 
 tireSchema.index(

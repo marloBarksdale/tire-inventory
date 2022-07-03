@@ -13,7 +13,7 @@ const sizeSchema = new mongoose.Schema(
 );
 
 sizeSchema.virtual('url').get(function () {
-  return `/tire-size/${this._id}`;
+  return `/sizes/${this._id}`;
 });
 
 sizeSchema.virtual('tires', {

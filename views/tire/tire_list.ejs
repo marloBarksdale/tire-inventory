@@ -20,16 +20,23 @@
                                   <div class="card-body">
                                     <p class="card-text"><%=product.name%></p>
                                    
-                                    <span class="card-text"><a href=""><%=product.manufacturer.name%></a></span> | 
-                                    <span class="card-text"><a href=""><%=product.season.name%></a></span> |
-                                    <span class="card-text"><a href="">Size <%=product.size.diameter%></a></span> 
+                                    <span class="card-text"><a href="<%=product.manufacturer.url%>"><%=product.manufacturer.name%></a></span> | 
+                                    <span class="card-text"><a href="<%=product.season.url%>"><%=product.season.name%></a></span> |
+                                    <span class="card-text"><a href="<%=product.size.url%>">Size <%=product.size.diameter%></a></span> 
                     
 
                                  
                                
                                     <div class="d-flex justify-content-between align-items-center">
                                       <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                        <a  href="<%=product.url%>"   class="btn btn-sm btn-outline-secondary">View</a>
+                                        <%if(locals.owner.creator){%>
+
+
+
+                                            <a  class="btn danger  btn-sm  btn-outline-secondary" href="/tires/delete-tire/<%=product._id%>">Delete</a>
+                                        <%}%>
+                                      
                                         <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
                                       </div>
                                       <small class="text-muted">9 mins</small>
