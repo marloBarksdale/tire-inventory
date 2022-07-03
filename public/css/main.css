@@ -10,8 +10,17 @@
 }
  */
 
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 500px));
+  justify-content: center;
 
+}
 
+.col-md-4 {
+  width: auto;
+
+}
 
 .navbar-nav.left {
   margin-left: auto;
@@ -251,6 +260,11 @@ form {
   color: white;
 }
 
+.btn-group {
+  display: flex;
+  gap: 2px;
+}
+
 .user-message {
   margin: auto;
   width: 90%;
@@ -308,6 +322,14 @@ form {
     display: none;
 
   }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 400px));
+    justify-content: center;
+
+  }
+
 
   .navbar .nav-item:hover .nav-link {}
 
