@@ -31,13 +31,11 @@
                                       <div class="btn-group">
                                         <a  href="<%=product.url%>"   class="btn btn-sm btn-outline-secondary">View</a>
                                         <%if(locals.owner.creator){%>
-
-
-
-                                            <a  class="btn danger  btn-sm  btn-outline-secondary" href="/tires/delete-tire/<%=product._id%>">Delete</a>
+                                            <form action="/tires/delete-tire/<%=product._id%>" method="post"> 
+                                                  <button type="submit"  class="btn danger  btn-sm  btn-outline-secondary" >Delete</button>
+                                            </form>
+                                         
                                         <%}%>
-                                      
-                                        <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
                                       </div>
                                       <small class="text-muted">9 mins</small>
                                      
