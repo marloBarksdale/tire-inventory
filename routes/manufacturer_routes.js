@@ -14,7 +14,7 @@ import joiSchemas from '../middleware/validationSchemas.js';
 const manufacturerRouter = express.Router();
 
 manufacturerRouter
-  .route('/add-manufacturer')
+  .route('/add')
   .post(isValid(joiSchemas.manufacturer), addManufacturer)
   .get(getAddManufacturer);
 manufacturerRouter.get(

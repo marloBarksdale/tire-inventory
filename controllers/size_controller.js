@@ -95,7 +95,7 @@ export const addSize = async (req, res, next) => {
 
     await size.save();
 
-    res.send(size);
+    res.redirect(size.url);
   } catch (error) {
     res.status(500).send(error.message);
   }

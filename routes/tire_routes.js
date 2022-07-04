@@ -14,7 +14,7 @@ import validationSchema from '../middleware/validationSchemas.js';
 const tireRouter = express.Router();
 
 tireRouter
-  .route('/add-tire')
+  .route('/add')
   .post(
     isValid(validationSchema.tire),
 

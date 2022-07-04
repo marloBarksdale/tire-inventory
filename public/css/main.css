@@ -30,6 +30,28 @@
   background-color: #4771fa;
 }
 
+
+.badge-success {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.badge-danger {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+.badge-warning {
+  color: #212529;
+  background-color: #ffc107;
+}
+
+.nothing {
+  height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
 body {
   padding: 0;
   margin: 0;

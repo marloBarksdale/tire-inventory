@@ -150,7 +150,7 @@ export const updateTire = async (req, res, next) => {
     const seasons = await Season.find();
     const tire = await Tire.findById(req.params.id);
 
-    if (exists) {
+    if (exists && exists._id.toString() !== req.params.id.toString()) {
       req.errors = new Joi.ValidationError('This tire already exists', [
         { message: 'This tire already exists', path: [''] },
       ]);

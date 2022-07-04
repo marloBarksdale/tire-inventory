@@ -67,7 +67,13 @@ const joiSchemas = {
       .message('Must be at least three characters')
       .required(),
 
-    price: joi.number().required().exist(),
+    quantity: joi
+      .number()
+      .integer()
+      .required()
+      .exist()
+      .min(0)
+      .message('Quantity cannot be less than zero'),
 
     size: joi.string().hex().length(24).required(),
     manufacturer: joi

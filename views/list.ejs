@@ -1,5 +1,21 @@
 <%- include('./includes/head.ejs') %> <%- include('./includes/navigation.ejs')
 %>
+
+<section class="jumbotron text-center">
+  <div class="container">
+    <h1 class="jumbotron-heading"><%=locals.pageTitle%></h1>
+
+    <div class="btn-group justify-content-center">
+      <p>
+        <a
+          href="<%=locals.url%>/add"
+          class="btn btn-sm btn-outline-secondary my"
+          >Add</a
+        >
+      </p>
+    </div>
+  </div>
+</section>
 <div class="container">
   <%if(locals.items.length > 0 ){%>
 
@@ -16,5 +32,12 @@
     >
     <%}%>
   </div>
+  <%}else{%>
+
+  <section class="jumbotron text-center nothing">
+    <div class="container">
+      <h1>Nothing Here...</h1>
+    </div>
+  </section>
   <%}%>
 </div>

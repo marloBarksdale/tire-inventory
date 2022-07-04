@@ -49,6 +49,17 @@ tireSchema.virtual('url').get(function () {
   return `/tires/${this._id}`;
 });
 
+tireSchema.virtual('status').get(function () {
+  if (this.quantity < 20) {
+    return 'danger';
+  }
+
+  if (this.quantity < 50) {
+    return 'warning';
+  }
+
+  return 'success';
+});
 tireSchema.index(
   { name: 1, size: 1, manufacturer: 1, season: 1 },
   { unique: true },

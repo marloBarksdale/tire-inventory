@@ -22,10 +22,14 @@
             <div class="form-control">
                 <label for="manufacturer">Manufacturer</label>
                 <select id="manufacturer" name="manufacturer" required>
-                    <option hidden disabled selected value> -- select an option -- </option>
+
+                 <%if(!locals.original){%>
+                        <option hidden disabled  selected value> -- select an option -- </option>
+                    <%}%>
+
                     <%manufacturers.forEach((manufacturer)=>{%>
 
-                           <option  value="<%=manufacturer._id%>" <%=locals.tire? locals.tire.manufacturer.toString()==manufacturer._id.toString()?'selected':'' :''%>><%=manufacturer.name%></option>
+                           <option  value="<%=manufacturer._id%>" <%=locals.original?locals.original.manufacturer.toString()==manufacturer._id.toString()?'selected':'' :''%>><%=manufacturer.name%></option>
 
                     <%})%>
 
@@ -36,10 +40,12 @@
             <div class="form-control">
                 <label for="season">Season</label>
                 <select id="season" name="season" required>
-                    <option hidden disabled selected value> -- select an option -- </option>
+                    <%if(!locals.original){%>
+                        <option hidden disabled  selected value> -- select an option -- </option>
+                    <%}%>
                     <%seasons.forEach((season)=>{%>
 
-                           <option value="<%=season._id%>" <%=locals.tire? locals.tire.season.toString()==season._id.toString()?'selected':'' :''%>><%=season.name%></option>
+                           <option value="<%=season._id%>" <%=locals.original?locals.original.season.toString()==season._id.toString()?'selected':'':''%>><%=season.name%></option>
 
                     <%})%>
 
@@ -53,10 +59,12 @@
             <div class="form-control">
                 <label for="size">Size</label>
                 <select id="size" name="size" required>
-                    <option hidden disabled selected value> -- select an option -- </option>
+                    <%if(!locals.original){%>
+                        <option hidden disabled  selected value> -- select an option -- </option>
+                    <%}%>
                     <%sizes.forEach((size)=>{%>
 
-                           <option value="<%=size._id%>" <%=locals.tire? locals.tire.size.toString()==size._id.toString()?'selected':'' :''%>><%=size.diameter%></option>
+                           <option value="<%=size._id%>" <%=locals.original?locals.original.size.toString()==size._id.toString()?'selected':'':''%>><%=size.diameter%></option>
 
                     <%})%>
 
@@ -71,9 +79,9 @@
           
 
             <div class="form-control">
-                <label for="name">Price</label>
-                <input type="text" name="price" id="price" value="<%=locals.original? original.price : '' %>" 
-                class="<%=locals.validationErrors?validationErrors.some((e)=>e.path==='price')? 'invalid':'':''%>">
+                <label for="quantity">Quantity</label>
+                <input type="number" name="quantity" id="quantity" value="<%=locals.original? original.quantity : '' %>" 
+                class="<%=locals.validationErrors?validationErrors.some((e)=>e.path==='quantity')? 'invalid':'':''%>">
             </div>  
             
             <!-- <div class="form-control">

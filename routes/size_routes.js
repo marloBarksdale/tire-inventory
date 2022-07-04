@@ -13,7 +13,7 @@ import validationSchemas from '../middleware/validationSchemas.js';
 const sizeRouter = express.Router();
 
 sizeRouter
-  .route('/add-size')
+  .route('/add')
   .post(isValid(validationSchemas.size), addSize)
   .get(getAddSize);
 

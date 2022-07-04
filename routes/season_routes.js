@@ -14,7 +14,7 @@ import joiSchemas from '../middleware/validationSchemas.js';
 const seasonRouter = express.Router();
 
 seasonRouter
-  .route('/add-season')
+  .route('/add')
   .post(isValid(joiSchemas.season), addSeason)
   .get(getAddSeason);
 seasonRouter.post('/:id/delete', deleteSeason);
