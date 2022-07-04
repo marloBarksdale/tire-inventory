@@ -26,6 +26,9 @@
   margin-left: auto;
 }
 
+.badge-primary {
+  background-color: #4771fa;
+}
 
 body {
   padding: 0;

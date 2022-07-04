@@ -21,7 +21,7 @@ tireRouter
     addTire,
   )
   .get(getAddTire);
-tireRouter.post('/delete-tire/:id', deleteTire);
+tireRouter.post('/:id/delete', deleteTire);
 tireRouter.get(
   '/mine',
   (req, res, next) => {
@@ -31,7 +31,7 @@ tireRouter.get(
   getTires,
 );
 tireRouter
-  .route('/update-tire/:id')
+  .route('/:id/update')
   .post(optionalUpdate, isValid(validationSchema.tire), updateTire)
   .get(getUpdateTire);
 tireRouter.get('/:id', getTire);

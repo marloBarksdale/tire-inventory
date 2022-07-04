@@ -17,12 +17,19 @@ manufacturerRouter
   .route('/add-manufacturer')
   .post(isValid(joiSchemas.manufacturer), addManufacturer)
   .get(getAddManufacturer);
-
+manufacturerRouter.get(
+  '/mine',
+  (req, res, next) => {
+    req.params.id = req.session.user._id;
+    next();
+  },
+  getManufacturers,
+);
 manufacturerRouter
-  .route('/update-manufacturer/:id')
+  .route('/:id/update')
   .post(isValid(joiSchemas.manufacturer), updateManufacturer)
   .get(getUpdateManufacturer);
-manufacturerRouter.post('/delete-manufacturer/:id', deleteManufacturer);
+manufacturerRouter.post('/:id/delete', deleteManufacturer);
 manufacturerRouter.get('/:id', getManufacturer);
 manufacturerRouter.get('/', getManufacturers);
 

@@ -6,20 +6,60 @@ import Tire from '../models/tire_model.js';
 export const getManufacturers = async (req, res, next) => {
   try {
     const match = {};
-    if (req.query.mine) {
-      match.creator = req.session.user._id;
+    const owner = {};
+    if (req.params.id) {
+      match.creator = req.params.id;
+      owner.creator = true;
     }
-    const manufacturers = await Manufacturer.find(match);
 
-    res.send(manufacturers);
+    const manufacturers = await Manufacturer.find(match).populate('tires');
+
+    res.render('list', {
+      pageTitle: 'All Manufacturers',
+      items: manufacturers,
+    });
   } catch (error) {}
 };
 
 export const getManufacturer = async (req, res, next) => {
   try {
-    const manufacturer = await Manufacturer.findById(req.params.id);
+    const match = {};
+    const owner = {};
+    if (req.params.id) {
+      match.creator = req.params.id;
+    }
+    const page = parseInt(req.query.page) || 1;
+    const manufacturer = await Manufacturer.findById(req.params.id).populate(
+      'tires',
+    );
 
-    res.send(manufacturer);
+    if (
+      manufacturer.creator._id.toString() === req.session.user._id.toString()
+    ) {
+      owner.main = true;
+    }
+
+    const tires = await Tire.find({ manufacturer: req.params.id })
+      .populate(['size', 'manufacturer', 'season'])
+      .skip((page - 1) * 6)
+      .limit(6);
+
+    const count = manufacturer.tires.length;
+
+    res.render('tire/tire_list', {
+      pageTitle: 'All Tires',
+      path: '/tires',
+      subHeading: `/${manufacturer.name}`,
+      prods: tires,
+      owner,
+      item: manufacturer,
+      currentPage: page,
+      hasNext: 6 * page < count,
+      hasPrevious: page > 1,
+      nextPage: page + 1,
+      previousPage: page - 1,
+      lastPage: Math.ceil(count / 6),
+    });
   } catch (error) {}
 };
 
@@ -79,7 +119,7 @@ export const updateManufacturer = async (req, res, next) => {
     ) {
       req.errors = new Joi.ValidationError('Not authorized', [
         {
-          message: 'You do not have the authority to update this manufacturer',
+          message: 'You cannot update manufacturer',
           path: ['name'],
           type: 'string.name',
           context: { key: 'name', label: 'name' },
@@ -111,7 +151,7 @@ export const updateManufacturer = async (req, res, next) => {
       { new: true },
     );
 
-    res.send(newManufacturer);
+    res.redirect(newManufacturer.url);
   } catch (error) {}
 };
 

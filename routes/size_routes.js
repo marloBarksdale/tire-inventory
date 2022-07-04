@@ -16,11 +16,21 @@ sizeRouter
   .route('/add-size')
   .post(isValid(validationSchemas.size), addSize)
   .get(getAddSize);
+
+sizeRouter.get(
+  '/mine',
+  (req, res, next) => {
+    req.params.id = req.session.user._id;
+    next();
+  },
+  getSizes,
+);
+
 sizeRouter
-  .route('/update-size/:id')
+  .route('/:id/update')
   .post(isValid(validationSchemas.size), updateSize)
   .get(getUpdateSize);
-sizeRouter.post('/delete-size/:id', deleteSize);
+sizeRouter.post('/:id/delete', deleteSize);
 
 sizeRouter.get('/:id', getSize);
 sizeRouter.get('/', getSizes);

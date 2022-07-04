@@ -5,20 +5,54 @@ import Tire from '../models/tire_model.js';
 
 export const getSeasons = async (req, res, next) => {
   try {
-    const seasons = await Season.find();
-    res.send(seasons);
+    const match = {};
+    const owner = {};
+    if (req.params.id) {
+      match.creator = req.params.id;
+      owner.creator = true;
+    }
+
+    const seasons = await Season.find(match).populate('tires');
+    res.render('list', {
+      pageTitle: 'All Seasons',
+      items: seasons,
+    });
   } catch (error) {}
 };
 
 export const getSeason = async (req, res, next) => {
   try {
-    const season = await Season.findById(req.params.id);
-    // const tires = await Tire.find({ season: req.params.id }).populate([
-    //   'manufacturer',
-    //   'size',
-    // ]);
+    const match = {};
+    const owner = {};
+    if (req.params.id) {
+      match.creator = req.params.id;
+    }
+    const page = parseInt(req.query.page) || 1;
 
-    res.send(season);
+    const season = await Season.findById(req.params.id).populate('tires');
+    const tires = await Tire.find({ season: req.params.id })
+      .populate(['size', 'manufacturer', 'season'])
+      .skip((page - 1) * 6)
+      .limit(6);
+
+    const count = season.tires.length;
+    if (season.creator._id.toString() === req.session.user._id.toString()) {
+      owner.main = true;
+    }
+    res.render('tire/tire_list', {
+      pageTitle: 'All Tires',
+      path: '/tires',
+      subHeading: `/${season.name}`,
+      prods: tires,
+      item: season,
+      owner,
+      currentPage: page,
+      hasNext: 6 * page < count,
+      hasPrevious: page > 1,
+      nextPage: page + 1,
+      previousPage: page - 1,
+      lastPage: Math.ceil(count / 6),
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }

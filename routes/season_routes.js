@@ -17,9 +17,19 @@ seasonRouter
   .route('/add-season')
   .post(isValid(joiSchemas.season), addSeason)
   .get(getAddSeason);
-seasonRouter.post('/delete-season/:id', deleteSeason);
+seasonRouter.post('/:id/delete', deleteSeason);
+
+seasonRouter.get(
+  '/mine',
+  (req, res, next) => {
+    req.params.id = req.session.user._id;
+    next();
+  },
+  getSeasons,
+);
+
 seasonRouter
-  .route('/update-season/:id')
+  .route('/:id/update')
   .post(isValid(joiSchemas.season), updateSeason)
   .get(getUpdateSeason);
 seasonRouter.get('/:id', getSeason);

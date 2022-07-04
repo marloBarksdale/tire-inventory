@@ -6,9 +6,34 @@
         <%- include('../includes/navigation.ejs') %>
 
             <main>
+
+
+              <section class="jumbotron text-center">
+                <div class="container">
+                  <h1 class="jumbotron-heading">All Tires <%=locals.subHeading%></h1>
+                <% if(locals.subHeading){%>
+                
+                                     
+                                    
+                    <%if(locals.owner.main){%>
+                      <div class="btn-group justify-content-center">
+                      <p>
+                        <a  href="<%=item.url%>/update"   class="btn btn-sm btn-outline-secondary my">Edit</a>
+                        <form action="<%=item.url%>/delete" method="post"> 
+                              <button type="submit"  class="btn danger  btn-sm  btn-outline-secondary" >Delete</button>
+                        </form>
+                      </p>
+                        
+                    </div>
+                    <%}%>
+                
+                <%}%>
+                  
+                </div>
+              </section>
                 <% if (prods.length > 0) { %>
                   
-
+               
                     
                    <div class="album py-5 bg-light">
                     <div class="container">
@@ -38,8 +63,8 @@
                                      
                                     
                                         <%if(locals.owner.creator){%>
-                                            <a  href="/tires/update-tire/<%=product._id%>"   class="btn btn-sm btn-outline-secondary">Edit</a>
-                                            <form action="/tires/delete-tire/<%=product._id%>" method="post"> 
+                                            <a  href="<%=product.url%>/update"   class="btn btn-sm btn-outline-secondary">Edit</a>
+                                            <form action="<%=product.url%>/delete" method="post"> 
                                                   <button type="submit"  class="btn danger  btn-sm  btn-outline-secondary" >Delete</button>
                                             </form>
                                          
@@ -59,7 +84,13 @@
                    </div>
                  
                 <% } else { %>
-                <h1>No Products Found!</h1>
+                  <section class="jumbotron text-center">
+                    <div class="container">
+                      <h1 class="jumbotron-heading">Nothing Here...</h1>
+                    
+                     
+                    </div>
+                  </section>
                 <% } %>
 
                      
