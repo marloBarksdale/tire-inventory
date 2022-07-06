@@ -6,7 +6,7 @@ import Size from './size_model.js';
 const tireSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    price: { type: Number, required: true },
+    // price: { type: Number, required: true },
     size: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Size',

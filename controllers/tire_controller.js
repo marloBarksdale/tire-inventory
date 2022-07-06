@@ -202,7 +202,7 @@ export const updateTire = async (req, res, next) => {
       },
       { new: true, runValidators: true },
     );
-    res.send(newTire);
+    res.redirect('/tires/mine');
   } catch (error) {
     res.status(406).send(error.message);
   }

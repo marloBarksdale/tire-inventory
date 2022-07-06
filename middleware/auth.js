@@ -14,7 +14,7 @@ const auth = async (req, res, next) => {
       return res.redirect('/login');
     }
     req.session.maxAge = new Date(Date.now() + 3600000);
-    res.locals.name = req.session.user.first_name;
+    res.locals.name = req.session.user.username;
     res.locals.url = req.baseUrl;
     next();
   } catch (error) {}
