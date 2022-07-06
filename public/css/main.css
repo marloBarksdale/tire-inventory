@@ -355,6 +355,10 @@ form {
 
   }
 
+  .row-cols-lg-3>* {
+    width: auto
+  }
+
 
   .navbar .nav-item:hover .nav-link {}
 
