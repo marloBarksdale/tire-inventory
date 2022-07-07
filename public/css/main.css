@@ -313,6 +313,8 @@ form {
   justify-content: center;
 }
 
+
+
 .pagination a {
   text-decoration: none;
   color: #00695c;
@@ -371,4 +373,19 @@ form {
     margin-top: 0;
 
   }
+}
+
+
+@media(max-width:992px) {
+
+  #hanging-icons>div>div {
+    display: block !important;
+    text-align: center;
+  }
+
+  .icon-square.me-3 {
+    background: none;
+    background-color: white !important
+  }
+
 }
