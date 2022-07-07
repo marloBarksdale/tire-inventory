@@ -6,9 +6,14 @@ import Size from '../models/size_model.js';
 import Tire from '../models/tire_model.js';
 
 export const index = async (req, res, next) => {
+  const tires = await Tire.find()
+    .sort({ createdAt: -1 })
+    .limit(3)
+    .populate(['size', 'manufacturer', 'season']);
   res.render('index', {
     pageTitle: 'All Tires',
     path: '/tires',
+    prods: tires,
   });
 };
 export const getTires = async (req, res, next) => {
