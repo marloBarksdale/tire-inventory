@@ -129,7 +129,7 @@ export const addTire = async (req, res, next) => {
     const tire = new Tire({ creator: req.session.user._id, ...req.body });
 
     await tire.save();
-    res.send(tire);
+    res.redirect(tire.url);
   } catch (error) {
     res.status(406).send(error.message);
   }
@@ -216,7 +216,7 @@ export const updateTire = async (req, res, next) => {
       },
       { new: true, runValidators: true },
     );
-    res.redirect('/tires/mine');
+    res.redirect(newTire.url);
   } catch (error) {
     res.status(406).send(error.message);
   }
@@ -234,7 +234,7 @@ export const deleteTire = async (req, res, next) => {
 
     await Tire.findByIdAndDelete(req.params.id);
 
-    res.send(tire);
+    res.redirect('/tires/mine');
   } catch (error) {
     res.status(500).send(error.message);
   }
