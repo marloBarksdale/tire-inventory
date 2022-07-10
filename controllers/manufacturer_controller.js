@@ -2,6 +2,7 @@ import Joi from 'joi';
 import _ from 'lodash';
 import Manufacturer from '../models/manufacturer_model.js';
 import Tire from '../models/tire_model.js';
+import { store } from '../utils/init.js';
 
 export const getManufacturers = async (req, res, next) => {
   try {
@@ -23,6 +24,9 @@ export const getManufacturers = async (req, res, next) => {
 
 export const getManufacturer = async (req, res, next) => {
   try {
+    if (req.session.error) {
+      res.locals.errorMessage = req.session.error;
+    }
     const match = {};
     const owner = {};
     if (req.params.id) {
@@ -60,6 +64,8 @@ export const getManufacturer = async (req, res, next) => {
       previousPage: page - 1,
       lastPage: Math.ceil(count / 6),
     });
+
+    next();
   } catch (error) {}
 };
 
@@ -170,11 +176,17 @@ export const deleteManufacturer = async (req, res, next) => {
     const tires = await Tire.find({ manufacturer: req.params.id });
 
     if (!_.isEmpty(tires)) {
-      return res
-        .status(403)
-        .send(
-          'Cannot delete this manufacturer because of existing tires:' + tires,
-        );
+      req.session.error =
+        'Cannot delete this manufacturer because of the existing tires below.';
+
+      return res.redirect(manufacturer.url);
+
+      //   setTimeout(() => {
+      //     delete req.session.error;
+      //     req.session.save(function (err) {});
+      //   }, 2000);
+
+      //   return;
     }
 
     await Manufacturer.findByIdAndDelete(req.params.id);

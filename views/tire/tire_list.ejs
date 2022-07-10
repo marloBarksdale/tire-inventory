@@ -30,6 +30,9 @@
                 <%}%>
                   
                 </div>
+                <%if(locals.errorMessage) {%>
+                  <div class="user-message user-message--error"><%=errorMessage%></div>
+                <%}%>
               </section>
                 <% if (prods.length > 0) { %>
                   

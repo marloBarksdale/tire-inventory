@@ -30,7 +30,13 @@ manufacturerRouter
   .post(isValid(joiSchemas.manufacturer), updateManufacturer)
   .get(getUpdateManufacturer);
 manufacturerRouter.post('/:id/delete', deleteManufacturer);
-manufacturerRouter.get('/:id', getManufacturer);
+manufacturerRouter.get('/:id', getManufacturer, (req, res, next) => {
+  if (req.session.error) {
+    delete req.session.error;
+    req.session.save();
+  }
+  next();
+});
 manufacturerRouter.get('/', getManufacturers);
 
 export default manufacturerRouter;
