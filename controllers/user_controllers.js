@@ -88,8 +88,9 @@ export const postLogin = async (req, res, next) => {
           context: { key: 'name', label: 'name' },
         },
       ]);
+
+      req.errors._original = req.body;
     }
-    req.errors._original = req.body;
   }
 
   if (req.errors) {
