@@ -32,7 +32,7 @@ const tireSchema = new mongoose.Schema(
         }
       },
     },
-    imageUrl: {
+    image: {
       type: String,
       required: true,
     },
@@ -46,6 +46,7 @@ const tireSchema = new mongoose.Schema(
         }
       },
     },
+
     quantity: { type: Number, required: true, default: 0 },
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
   },

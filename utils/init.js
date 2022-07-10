@@ -9,6 +9,7 @@ import Tire from '../models/tire_model.js';
 debug('tire-inventory:server');
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
+import multer from 'multer';
 
 const app = express();
 
@@ -19,6 +20,23 @@ const store = new sessionStore({
   databaseName: 'tire-inventory',
   collection: 'sessions',
 });
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + '-' + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (!file.originalname.match(/\.(jpg|jpeg|gif|png)$/)) {
+    return cb(null, false);
+  }
+
+  cb(undefined, true);
+};
 
 app.use(
   session({
@@ -35,7 +53,8 @@ const __dirname = dirname(__filename);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(multer({ storage, fileFilter }).single('image'));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 //Set engine
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -49,4 +68,4 @@ const dbConnect = async () => {
 
 dbConnect();
 
-export { app, store };
+export { app, store, fileFilter, storage };

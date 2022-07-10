@@ -24,6 +24,10 @@ const isValid = (schema) => {
       }
     }
 
+    if (req.file) {
+      req.body.image = req.file.path;
+    }
+
     try {
       const { error, value } = await schema.validateAsync(req.body, {
         abortEarly: false,

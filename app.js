@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import multer from 'multer';
 import auth from './middleware/auth.js';
 import Manufacturer from './models/manufacturer_model.js';
 import Season from './models/season_model.js';

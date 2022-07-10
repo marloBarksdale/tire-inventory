@@ -11,7 +11,7 @@
             <div class="user-message user-message--error"><%=errorMessage%></div>
           <%}%>
 
-        <form class="product-form"  method="POST" action="" >
+        <form class="product-form"  method="POST" action=""  enctype="multipart/form-data">
           
         
             <div class="form-control">
@@ -73,7 +73,8 @@
             </div>  
   
                 <div class="form-control" >
-                    <input class="form-control" type="file" id="formFile" onchange="preview()">
+                    <label for="image">Image</label>
+                    <input class="form-control" type="file" name="image" id="image" onchange="preview()" required>
                     <img id="frame" src="" class="img-fluid" />
 
        
@@ -115,7 +116,7 @@
         }
     }
     function clearImage() {
-        document.getElementById('formFile').value = null;
+        document.getElementById('image').value = null;
         frame.src = "";
         document.getElementById('clear').style.display="none"
     }
