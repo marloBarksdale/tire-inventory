@@ -32,6 +32,10 @@ const tireSchema = new mongoose.Schema(
         }
       },
     },
+    imageUrl: {
+      type: String,
+      required: true,
+    },
     season: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'Season',
@@ -44,7 +48,6 @@ const tireSchema = new mongoose.Schema(
     },
     quantity: { type: Number, required: true, default: 0 },
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
-    //Add Stock
   },
   { timestamps: true },
 );

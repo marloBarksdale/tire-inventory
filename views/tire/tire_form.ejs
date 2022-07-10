@@ -71,17 +71,23 @@
                 </select>
 
             </div>  
+  
+                <div class="form-control" >
+                    <input class="form-control" type="file" id="formFile" onchange="preview()">
+                    <img id="frame" src="" class="img-fluid" />
 
-
-          
-
-
-          
-
+       
+                    <button type="button"  id="clear"  style="display: none;" onclick="clearImage()"class="btn btn-primary mt-3">Clear</button>
+                </div>
+    
+       
+    
+        
             <div class="form-control">
                 <label for="quantity">Quantity</label>
                 <input type="number" name="quantity" id="quantity" value="<%=locals.original? original.quantity : '' %>" 
                 class="<%=locals.validationErrors?validationErrors.some((e)=>e.path==='quantity')? 'invalid':'':''%>">
+             
             </div>  
             
             <!-- <div class="form-control">
@@ -96,3 +102,22 @@
         </form>
     </main>
 <%- include('../includes/end.ejs') %>
+
+
+<script>
+    function preview() {
+        frame.src = URL.createObjectURL(event.target.files[0]);
+        if(frame.src===''){
+            document.getElementById('clear').style.display="none"
+        }
+        else{
+            document.getElementById('clear').style.display="block"
+        }
+    }
+    function clearImage() {
+        document.getElementById('formFile').value = null;
+        frame.src = "";
+        document.getElementById('clear').style.display="none"
+    }
+   
+</script>
