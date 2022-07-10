@@ -1,6 +1,8 @@
 import Tire from '../models/tire_model.js';
 import mongoose from 'mongoose';
 
+//Otional updates can be made to tires if a form is not being used
+
 export const optionalUpdate = async (req, res, next) => {
   try {
     if (req.params.id) {

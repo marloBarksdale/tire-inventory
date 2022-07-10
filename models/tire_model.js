@@ -3,6 +3,10 @@ import Manufacturer from './manufacturer_model.js';
 import Season from './season_model.js';
 import Size from './size_model.js';
 
+import { format } from 'date-fns';
+
+import enCA from 'date-fns/locale/en-CA/index.js';
+
 const tireSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -49,6 +53,13 @@ tireSchema.virtual('url').get(function () {
   return `/tires/${this._id}`;
 });
 
+tireSchema.virtual('created').get(function () {
+  return format(this.createdAt, 'PPPPp');
+});
+
+tireSchema.virtual('lastModified').get(function () {
+  return format(this.updatedAt, 'PPPPp');
+});
 tireSchema.virtual('status').get(function () {
   if (this.quantity < 20) {
     return 'danger';

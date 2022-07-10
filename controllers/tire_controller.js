@@ -51,14 +51,23 @@ export const getTires = async (req, res, next) => {
 };
 
 export const getTire = async (req, res, next) => {
+  const owner = {};
+  if (req.params.id) {
+    owner.creator = true;
+  }
   try {
     const tire = await Tire.findById(req.params.id).populate([
       'manufacturer',
       'season',
       'size',
+      'creator',
     ]);
 
-    res.send(tire);
+    if (tire.creator._id.toString() === req.session.user._id.toString()) {
+      res.locals.owner = true;
+    }
+
+    res.render('tire/tireDetail', { tire });
   } catch (error) {
     res.status(500).send(error.message);
   }

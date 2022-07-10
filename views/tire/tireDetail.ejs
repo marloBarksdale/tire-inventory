@@ -1,0 +1,114 @@
+<%- include('../includes/head.ejs') %>
+
+<body>
+  <%- include('../includes/navigation.ejs') %>
+  <main>
+    <div class="d-flex justify-content-center">
+      <div class="card w-100">
+        <img class="card-img-top" src="/images/sun.jpg" alt="Card image cap" />
+        <div class="card-body">
+          <h5 class="card-title"><%=tire.name%></h5>
+          <p class="card-text">
+            <span
+              class="badge badge-primary badge-pill h6 badge-<%=tire.status%>"
+            >
+              <%=tire.quantity%>
+            </span>
+          </p>
+        </div>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne"
+                aria-expanded="false"
+                aria-controls="flush-collapseOne"
+              >
+                Specifications
+              </button>
+            </h2>
+            <div
+              id="flush-collapseOne"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingOne"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <a href="<%=tire.manufacturer.url%>"
+                      ><%=tire.manufacturer.name%></a
+                    >
+                  </li>
+
+                  <li class="list-group-item">
+                    <a href="<%=tire.season.url%>"><%=tire.season.name%></a>
+                  </li>
+
+                  <li class="list-group-item">
+                    <a href="<%=tire.size.url%>"
+                      >Size <%=tire.size.diameter%></a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseThree"
+                aria-expanded="false"
+                aria-controls="flush-collapseThree"
+              >
+                Creator
+              </button>
+            </h2>
+            <div
+              id="flush-collapseThree"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingThree"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><%=tire.creator.name%></li>
+                  <li class="list-group-item"><%=tire.creator.email%></li>
+                  <li class="list-group-item">Created: <%=tire.created%></li>
+                  <li class="list-group-item">
+                    Last-Modified: <%=tire.lastModified%>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <%if(locals.owner){%>
+          <a
+            href="<%=tire.url%>/update"
+            class="btn btn-sm btn-outline-secondary"
+            >Edit</a
+          >
+          <form action="<%=tire.url%>/delete" method="post">
+            <button
+              type="submit"
+              class="btn danger btn-sm btn-outline-secondary"
+            >
+              Delete
+            </button>
+          </form>
+
+          <%}%>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>

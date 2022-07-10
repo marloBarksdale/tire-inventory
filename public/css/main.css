@@ -350,6 +350,13 @@ form {
 
   }
 
+
+
+  .card.w-100 {
+
+    width: 35% !important
+  }
+
   .row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 400px));

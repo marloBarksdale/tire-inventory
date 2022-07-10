@@ -1,4 +1,10 @@
+import _ from 'lodash';
 import auth from './middleware/auth.js';
+import Manufacturer from './models/manufacturer_model.js';
+import Season from './models/season_model.js';
+import Size from './models/size_model.js';
+import Tire from './models/tire_model.js';
+import User from './models/user_model.js';
 import indexRouter from './routes/index.js';
 import manufacturerRouter from './routes/manufacturer_routes.js';
 import seasonRouter from './routes/season_routes.js';
@@ -13,6 +19,55 @@ app.use('/sizes', auth, sizeRouter);
 app.use('/seasons', auth, seasonRouter);
 app.use(userRouter);
 app.use('/', auth, indexRouter);
+
+const populate = async () => {
+  const users = await User.find();
+
+  for (let i = 1; i < 15; i++) {
+    const manufacturer = new Manufacturer({
+      name: `Manufacturer ${i}`,
+      creator: _.sample(users)._id,
+    });
+
+    await manufacturer.save();
+  }
+
+  for (let i = 1; i < 15; i++) {
+    const season = new Season({
+      name: `Season ${i}`,
+      creator: _.sample(users)._id,
+    });
+    await season.save();
+  }
+
+  for (let i = 16; i < 46; i++) {
+    const size = new Size({
+      diameter: i,
+      creator: _.sample(users)._id,
+    });
+    await size.save();
+  }
+
+  const sizes = await Size.find();
+  const manufacturers = await Manufacturer.find();
+  const seasons = await Season.find();
+
+  for (let i = 1; i <= 40; i++) {
+    const tire = new Tire({
+      name: `Tire ${i}`,
+      season: _.sample(seasons, 1)._id,
+      manufacturer: _.sample(manufacturers, 1)._id,
+      size: _.sample(sizes, 1)._id,
+
+      creator: _.sample(users, 1)._id,
+      quantity: Math.floor(Math.random() * 100),
+    });
+    await tire.save();
+  }
+};
+
+// populate();
+
 // const run = async () => {
 //   const sizes = await Size.find();
 //   const manufacturers = await Manufacturer.find();
