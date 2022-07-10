@@ -32,7 +32,13 @@ seasonRouter
   .route('/:id/update')
   .post(isValid(joiSchemas.season), updateSeason)
   .get(getUpdateSeason);
-seasonRouter.get('/:id', getSeason);
+seasonRouter.get('/:id', getSeason, (req, res, next) => {
+  if (req.session.error) {
+    delete req.session.error;
+    req.session.save();
+  }
+  next();
+});
 seasonRouter.get('/', getSeasons);
 
 export default seasonRouter;

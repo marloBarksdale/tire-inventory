@@ -22,6 +22,9 @@ export const getSeasons = async (req, res, next) => {
 
 export const getSeason = async (req, res, next) => {
   try {
+    if (req.session.error) {
+      res.locals.errorMessage = req.session.error;
+    }
     const match = {};
     const owner = {};
     if (req.params.id) {
@@ -53,6 +56,7 @@ export const getSeason = async (req, res, next) => {
       previousPage: page - 1,
       lastPage: Math.ceil(count / 6),
     });
+    next();
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -166,9 +170,10 @@ export const deleteSeason = async (req, res, next) => {
     const tires = await Tire.find({ season: req.params.id });
 
     if (!_.isEmpty(tires)) {
-      return res.send(
-        'Cannot delete this Season because of existing tires: ' + tires,
-      );
+      req.session.error =
+        'Cannot delete this season because of the existing tires below.';
+
+      return res.redirect(season.url);
     }
 
     await Season.findByIdAndDelete(req.params.id);

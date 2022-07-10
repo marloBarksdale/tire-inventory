@@ -11,14 +11,25 @@
         <div class="user-message user-message--error"><%=errorMessage%></div>
       <%}%>
         <form class="login-form" action="/login" method="POST" novalidate>
-            <div class="form-control">
-                <label for="title">Email</label>
-                <input type="email" name="email" id="email" required>
-            </div>
-            <div class="form-control">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" required>
-            </div>
+          <div class="form-control">
+            <label for="email">E-Mail</label>
+            <input
+            
+             type="email" 
+             name="email" 
+             id="email"    
+             value="<%=locals.original?original.email: '' %>"
+     
+             required>
+        </div>
+        <div class="form-control">
+          <label for="password">Password</label>
+          <input type="password" 
+          name="password" 
+          id="password" 
+        
+          required>
+      </div>
          
      
             <button class="btn" type="submit">Login</button>

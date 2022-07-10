@@ -32,6 +32,12 @@ sizeRouter
   .get(getUpdateSize);
 sizeRouter.post('/:id/delete', deleteSize);
 
-sizeRouter.get('/:id', getSize);
+sizeRouter.get('/:id', getSize, (req, res, next) => {
+  if (req.session.error) {
+    delete req.session.error;
+    req.session.save();
+  }
+  next();
+});
 sizeRouter.get('/', getSizes);
 export default sizeRouter;

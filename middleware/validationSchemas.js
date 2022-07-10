@@ -7,6 +7,29 @@ import Size from '../models/size_model.js';
 import User from '../models/user_model.js';
 
 const joiSchemas = {
+  login: joi.object().keys({
+    email: joi
+      .string()
+      .email()
+      .message('Please enter a valid email')
+      .required()
+      .external(async (value) => {
+        const exists = await User.findOne({ email: value });
+
+        if (!exists) {
+          throw new Joi.ValidationError('Invalid credentials', [
+            {
+              message: 'Invalid credentials',
+              path: ['email'],
+              type: 'string.email',
+              context: { key: 'email', label: 'email', value },
+            },
+          ]);
+        }
+      }),
+    password: joi.string().required().min(1).message('Invalid credentials'),
+  }),
+
   user: joi.object().keys({
     first_name: joi.string().trim().required(),
     last_name: joi.string().trim().required(),

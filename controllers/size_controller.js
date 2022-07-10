@@ -26,6 +26,9 @@ export const getSizes = async (req, res, next) => {
 
 export const getSize = async (req, res, next) => {
   try {
+    if (req.session.error) {
+      res.locals.errorMessage = req.session.error;
+    }
     const match = {};
     const owner = {};
     if (req.params.id) {
@@ -60,6 +63,7 @@ export const getSize = async (req, res, next) => {
       previousPage: page - 1,
       lastPage: Math.ceil(count / 6),
     });
+    next();
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -172,9 +176,10 @@ export const deleteSize = async (req, res, next) => {
     const tires = await Tire.find({ size: req.params.id });
 
     if (!_.isEmpty(tires)) {
-      return res.send(
-        'Cannot delete this Size because of existing tires' + tires,
-      );
+      req.session.error =
+        'Cannot delete this size because of the existing tires below.';
+
+      return res.redirect(size.url);
     }
 
     await Size.findByIdAndDelete(req.params.id);
