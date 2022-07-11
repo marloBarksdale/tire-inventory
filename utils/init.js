@@ -83,14 +83,12 @@ const __dirname = dirname(__filename);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.static(path.join(__dirname, '../images')));
-// app.use(upload.single('image'));
+app.use(upload.single('image'));
 
 //Set engine
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static(path.join(__dirname, '../public')));
-app.use(upload.single('image'));
 
 const dbConnect = async () => {
   try {

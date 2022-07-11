@@ -108,20 +108,14 @@ export const addTire = async (req, res, next) => {
       req.errors._original = req.body;
     }
 
-    console.log(req.body);
-    console.log(req.errors);
-
     if (req.errors) {
       const details = req.errors.details.map((detail) => {
         return { message: _.upperFirst(detail.message), path: detail.path[0] };
       });
 
-      const s3Params = { Bucket: process.env.BUCKET, Key: req.body.key };
-      await s3.deleteObject(s3Params).promise();
-      delete req.errors._original.image;
       delete req.errors._original.image;
       const tire = { name, manufacturer, season, size, price };
-      return res.render('tire/tire_form', {
+      res.render('tire/tire_form', {
         path: '',
         pageTitle: 'Create Tire',
         errorMessage: details[0].message,
@@ -133,6 +127,13 @@ export const addTire = async (req, res, next) => {
         manufacturers,
         sizes,
       });
+
+      if (req.file) {
+        const s3Params = { Bucket: process.env.BUCKET, Key: req.body.imageKey };
+        await s3.deleteObject(s3Params).promise();
+      }
+
+      return;
     }
 
     const tire = new Tire({ creator: req.session.user._id, ...req.body });

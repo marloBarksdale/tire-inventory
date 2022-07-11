@@ -32,30 +32,30 @@ app.use('/', auth, indexRouter);
 const populate = async () => {
   const users = await User.find();
 
-  for (let i = 1; i < 15; i++) {
-    const manufacturer = new Manufacturer({
-      name: `Manufacturer ${i}`,
-      creator: _.sample(users)._id,
-    });
+  // for (let i = 1; i < 15; i++) {
+  //   const manufacturer = new Manufacturer({
+  //     name: `Manufacturer ${i}`,
+  //     creator: _.sample(users)._id,
+  //   });
 
-    await manufacturer.save();
-  }
+  //   await manufacturer.save();
+  // }
 
-  for (let i = 1; i < 15; i++) {
-    const season = new Season({
-      name: `Season ${i}`,
-      creator: _.sample(users)._id,
-    });
-    await season.save();
-  }
+  // for (let i = 1; i < 15; i++) {
+  //   const season = new Season({
+  //     name: `Season ${i}`,
+  //     creator: _.sample(users)._id,
+  //   });
+  //   await season.save();
+  // }
 
-  for (let i = 16; i < 46; i++) {
-    const size = new Size({
-      diameter: i,
-      creator: _.sample(users)._id,
-    });
-    await size.save();
-  }
+  // for (let i = 16; i < 46; i++) {
+  //   const size = new Size({
+  //     diameter: i,
+  //     creator: _.sample(users)._id,
+  //   });
+  //   await size.save();
+  // }
 
   const sizes = await Size.find();
   const manufacturers = await Manufacturer.find();

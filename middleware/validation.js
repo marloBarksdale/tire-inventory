@@ -24,11 +24,6 @@ const isValid = (schema) => {
       }
     }
 
-    if (req.file) {
-      req.body.image = req.file.location;
-      req.body.imageKey = req.file.key;
-    }
-
     try {
       const { error, value } = await schema.validateAsync(req.body, {
         abortEarly: false,
@@ -37,6 +32,11 @@ const isValid = (schema) => {
     } catch (error) {
       req.errors = error;
       req.errors._original = { ...req.body };
+    }
+
+    if (req.file) {
+      req.body.image = req.file.location;
+      req.body.imageKey = req.file.key;
     }
 
     next();
