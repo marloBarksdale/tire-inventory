@@ -4,6 +4,7 @@ import Manufacturer from '../models/manufacturer_model.js';
 import Season from '../models/season_model.js';
 import Size from '../models/size_model.js';
 import Tire from '../models/tire_model.js';
+import { s3, upload } from '../utils/init.js';
 
 export const index = async (req, res, next) => {
   const tires = await Tire.find()
@@ -111,6 +112,9 @@ export const addTire = async (req, res, next) => {
       const details = req.errors.details.map((detail) => {
         return { message: _.upperFirst(detail.message), path: detail.path[0] };
       });
+
+      const s3Params = { Bucket: process.env.BUCKET, Key: req.body.key };
+      await s3.deleteObject(s3Params).promise();
       const tire = { name, manufacturer, season, size, price };
       return res.render('tire/tire_form', {
         path: '',

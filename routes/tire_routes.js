@@ -11,6 +11,7 @@ import {
 import { optionalUpdate } from '../middleware/update-middleware.js';
 import { isValid } from '../middleware/validation.js';
 import validationSchema from '../middleware/validationSchemas.js';
+import { upload } from '../utils/init.js';
 const tireRouter = express.Router();
 
 tireRouter

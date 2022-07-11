@@ -14,13 +14,13 @@ import tireRouter from './routes/tire_routes.js';
 import userRouter from './routes/user_routes.js';
 import { app } from './utils/init.js';
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PUT,PATCH,DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PUT,PATCH,DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  next();
-});
+//   next();
+// });
 
 app.use('/tires', auth, tireRouter);
 app.use('/manufacturers', auth, manufacturerRouter);

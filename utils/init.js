@@ -1,19 +1,16 @@
-import express from 'express';
+import S3 from 'aws-sdk/clients/s3.js';
+import MongoDBStore from 'connect-mongodb-session';
 import debug from 'debug';
 import 'dotenv/config';
-import logger from 'morgan';
-import path, { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-import mongoose from 'mongoose';
-import Tire from '../models/tire_model.js';
-debug('tire-inventory:server');
+import express from 'express';
 import session from 'express-session';
-import MongoDBStore from 'connect-mongodb-session';
+import mongoose from 'mongoose';
+import logger from 'morgan';
 import multer from 'multer';
-import S3 from 'aws-sdk/clients/s3.js';
-import fs, { fsync } from 'fs';
 import multerS3 from 'multer-s3';
-import s from 'connect-redis';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+debug('tire-inventory:server');
 const app = express();
 
 const s3 = new S3({
@@ -86,13 +83,14 @@ const __dirname = dirname(__filename);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '../images')));
-app.use(upload.single('image'));
+// app.use(express.static(path.join(__dirname, '../images')));
+// app.use(upload.single('image'));
 
 //Set engine
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static(path.join(__dirname, '../public')));
+app.use(upload.single('image'));
 
 const dbConnect = async () => {
   try {
@@ -102,4 +100,4 @@ const dbConnect = async () => {
 
 dbConnect();
 
-export { app, store };
+export { app, store, upload, s3 };
