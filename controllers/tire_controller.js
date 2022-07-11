@@ -170,6 +170,7 @@ export const updateTire = async (req, res, next) => {
       ]);
 
       req.errors._original = req.body;
+      req.errors._original.image = tire.image;
     }
 
     if (!tire) {
@@ -183,13 +184,14 @@ export const updateTire = async (req, res, next) => {
       ]);
 
       req.errors._original = req.body;
+      req.errors._original.image = tire.image;
     }
 
     if (req.errors) {
       const details = req.errors.details.map((detail) => {
         return { message: _.upperFirst(detail.message), path: detail.path[0] };
       });
-
+      req.errors._original.image = tire.image;
       return res.status(422).render('tire/tire_form', {
         path: '',
         pageTitle: 'Update Tire',

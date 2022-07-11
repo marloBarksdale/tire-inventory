@@ -74,8 +74,8 @@
   
                 <div class="form-control" >
                     <label for="image">Image</label>
-                    <input class="form-control" type="file" name="image" id="image" onchange="preview()" required>
-                    <img id="frame" src="" class="img-fluid" />
+                    <input class="form-control" type="file" name="image" id="image" onchange="preview()">
+                    <img id="frame" src='<%=locals.original?original.image:""%>' class="img-fluid" />
 
        
                     <button type="button"  id="clear"  style="display: none;" onclick="clearImage()"class="btn btn-primary mt-3">Clear</button>

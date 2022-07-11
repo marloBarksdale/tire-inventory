@@ -34,7 +34,11 @@ const tireSchema = new mongoose.Schema(
     },
     image: {
       type: String,
+      get: function (value) {
+        return '/' + value;
+      },
       required: true,
+      default: 'images/2022-07-11T00:08:26.987Z-default-tire.jpg',
     },
     season: {
       type: mongoose.SchemaTypes.ObjectId,
