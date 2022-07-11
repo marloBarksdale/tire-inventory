@@ -114,7 +114,9 @@ export const addTire = async (req, res, next) => {
       });
 
       const s3Params = { Bucket: process.env.BUCKET, Key: req.body.key };
+
       await s3.deleteObject(s3Params).promise();
+      delete req.errors._original.image;
       const tire = { name, manufacturer, season, size, price };
       return res.render('tire/tire_form', {
         path: '',
