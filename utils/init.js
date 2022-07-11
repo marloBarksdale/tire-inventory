@@ -10,23 +10,16 @@ debug('tire-inventory:server');
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
 import multer from 'multer';
-
+import S3 from 'aws-sdk/clients/s3.js';
+import fs, { fsync } from 'fs';
+import multerS3 from 'multer-s3';
+import s from 'connect-redis';
 const app = express();
 
-const sessionStore = MongoDBStore(session);
-
-const store = new sessionStore({
-  uri: process.env.MONGODB,
-  databaseName: 'tire-inventory',
-  collection: 'sessions',
-});
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'images');
-  },
-  filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + '-' + file.originalname);
+const s3 = new S3({
+  credentials: {
+    accessKeyId: process.env.AWSID,
+    secretAccessKey: process.env.AWSSECRET,
   },
 });
 
@@ -37,6 +30,46 @@ const fileFilter = (req, file, cb) => {
 
   cb(undefined, true);
 };
+
+const upload = multer({
+  fileFilter,
+  storage: multerS3({
+    s3,
+    acl: 'public-read',
+    bucket: process.env.BUCKET,
+    key: function (req, file, cb) {
+      cb(null, new Date().toISOString() + '-' + file.originalname);
+    },
+  }),
+});
+
+// s3.upload(
+//   { Bucket: process.env.BUCKET, Key: 'hello', Body: file },
+//   function (err, data) {
+//     if (err) {
+//       throw err;
+//     }
+
+//     console.log('Uploaded');
+//   },
+// );
+
+const sessionStore = MongoDBStore(session);
+
+const store = new sessionStore({
+  uri: process.env.MONGODB,
+  databaseName: 'tire-inventory',
+  collection: 'sessions',
+});
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'images');
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, new Date().toISOString() + '-' + file.originalname);
+//   },
+// });
 
 app.use(
   session({
@@ -53,8 +86,8 @@ const __dirname = dirname(__filename);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/images', express.static(path.join(__dirname, '../images')));
-app.use(multer({ storage, fileFilter }).single('image'));
+app.use(express.static(path.join(__dirname, '../images')));
+app.use(upload.single('image'));
 
 //Set engine
 app.set('view engine', 'ejs');
@@ -69,4 +102,4 @@ const dbConnect = async () => {
 
 dbConnect();
 
-export { app, store, fileFilter, storage };
+export { app, store };

@@ -25,7 +25,7 @@ const isValid = (schema) => {
     }
 
     if (req.file) {
-      req.body.image = req.file.path;
+      req.body.image = req.file.location;
     }
 
     try {
