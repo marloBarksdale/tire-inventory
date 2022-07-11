@@ -53,8 +53,9 @@ const __dirname = dirname(__filename);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/images', express.static(path.join(__dirname, '../images')));
 app.use(multer({ storage, fileFilter }).single('image'));
-app.use('/images', express.static(path.join(__dirname, 'images')));
+
 //Set engine
 app.set('view engine', 'ejs');
 app.set('views', 'views');
