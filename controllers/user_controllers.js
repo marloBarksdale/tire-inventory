@@ -28,18 +28,6 @@ export const postSignup = async (req, res, next) => {
   }
 
   try {
-    // const exists = await User.findOne({ email: req.body.email });
-
-    // if (exists) {
-    //   console.log('here');
-    //   return res.status(422).render('auth/signup', {
-    //     path: '/signup',
-    //     pageTitle: 'Signup',
-    //     // original: req.errors._original,
-    //     errorMessage: 'There was a problem trying to sign up with that email',
-    //   });
-    // }
-
     const user = new User(req.body);
     await user.save();
     res.redirect('/');

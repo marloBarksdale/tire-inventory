@@ -13,7 +13,6 @@ export const index = async (req, res, next) => {
     .limit(3)
     .populate(['size', 'manufacturer', 'season', 'image']);
 
-  console.log(tires);
   res.render('index', {
     pageTitle: 'All Tires',
     path: '/tires',

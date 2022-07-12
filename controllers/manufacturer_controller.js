@@ -83,7 +83,7 @@ export const addManufacturer = async (req, res, next) => {
       const details = req.errors.details.map((detail) => {
         return { message: _.upperFirst(detail.message), path: detail.path[0] };
       });
-      console.log(details);
+
       return res.status(422).render('create-form', {
         path: '',
         pageTitle: 'Create Manufacturer',

@@ -11,8 +11,5 @@ const deleteProduct = async (btn) => {
     });
 
     prodElement.remove(prodElement);
-    console.log(result);
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };

@@ -15,7 +15,6 @@ const tireSchema = new mongoose.Schema(
       required: true,
       validate: async (value) => {
         if (!(await Size.findById(value))) {
-          console.log('error');
           throw new Error('Enter a valid size');
         }
       },
