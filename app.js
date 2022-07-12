@@ -1,3 +1,4 @@
+import helmet from 'helmet';
 import _ from 'lodash';
 import multer from 'multer';
 import auth from './middleware/auth.js';
@@ -14,15 +15,16 @@ import sizeRouter from './routes/size_routes.js';
 import tireRouter from './routes/tire_routes.js';
 import userRouter from './routes/user_routes.js';
 import { app } from './utils/init.js';
+import { createWriteStream, readFileSync } from 'fs';
+import https from 'https';
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PUT,PATCH,DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST,PUT,PATCH,DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  next();
-});
-
+//   next();
+// });
+// app.use(helmet());
 app.use('/tires', auth, tireRouter);
 app.use('/manufacturers', auth, manufacturerRouter);
 app.use('/sizes', auth, sizeRouter);
@@ -123,6 +125,11 @@ const populate = async () => {
 //   res.send(error);
 // });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Up on ${process.env.PORT}`);
-});
+const privateKey = readFileSync('./server.key');
+const certificate = readFileSync('./server.cert');
+
+https
+  .createServer({ key: privateKey, cert: certificate }, app)
+  .listen(process.env.PORT, () => {
+    console.log(`Up on ${process.env.PORT}`);
+  });

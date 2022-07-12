@@ -4,13 +4,17 @@ import debug from 'debug';
 import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
+import { createWriteStream, readFileSync } from 'fs';
 import helmet from 'helmet';
 import mongoose from 'mongoose';
+import morgan from 'morgan';
 import logger from 'morgan';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import https from 'https';
+
 debug('tire-inventory:server');
 const app = express();
 
@@ -20,6 +24,9 @@ const s3 = new S3({
     secretAccessKey: process.env.AWSSECRET,
   },
 });
+
+const privateKey = readFileSync('./server.key');
+const certificate = readFileSync('./server.cert');
 
 const fileFilter = (req, file, cb) => {
   if (!file.originalname.match(/\.(jpg|jpeg|gif|png)$/)) {
@@ -81,11 +88,15 @@ app.use(
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const accessLogStream = createWriteStream(path.join(__dirname, 'access.log'), {
+  flags: 'a',
+});
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(upload.single('image'));
-// app.use(helmet());
+app.use(morgan('combined', { stream: accessLogStream }));
 //Set engine
 app.set('view engine', 'ejs');
 app.set('views', 'views');

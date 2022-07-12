@@ -1,7 +1,6 @@
 import _ from 'lodash';
-import validator from 'validator';
 import mongoose from 'mongoose';
-import { s3 } from '../utils/init.js';
+import validator from 'validator';
 
 const isValid = (schema) => {
   return async (req, res, next) => {
