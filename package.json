@@ -4,6 +4,9 @@
   "description": "A node app to track inventory in a tire shop",
   "main": "app.js",
   "type": "module",
+  "engines": {
+    "node": "16.14.2"
+  },
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
