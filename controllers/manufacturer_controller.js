@@ -44,7 +44,7 @@ export const getManufacturer = async (req, res, next) => {
     }
 
     const tires = await Tire.find({ manufacturer: req.params.id })
-      .populate(['size', 'manufacturer', 'season'])
+      .populate(['size', 'manufacturer', 'season', 'image'])
       .skip((page - 1) * 6)
       .limit(6);
 

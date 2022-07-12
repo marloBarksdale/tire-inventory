@@ -6,6 +6,7 @@ import Size from './size_model.js';
 import { format } from 'date-fns';
 
 import enCA from 'date-fns/locale/en-CA/index.js';
+import { ObjectId } from 'mongodb';
 
 const tireSchema = new mongoose.Schema(
   {
@@ -33,10 +34,8 @@ const tireSchema = new mongoose.Schema(
       },
     },
     image: {
-      type: String,
-
-      default:
-        'https://tireinventory.s3.amazonaws.com/2022-07-11T04%3A45%3A32.758Z-default-tire.jpg',
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'Image',
     },
     season: {
       type: mongoose.SchemaTypes.ObjectId,

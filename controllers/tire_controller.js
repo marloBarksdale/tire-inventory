@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import _ from 'lodash';
+import Image from '../models/image_model.js';
 import Manufacturer from '../models/manufacturer_model.js';
 import Season from '../models/season_model.js';
 import Size from '../models/size_model.js';
@@ -10,7 +11,9 @@ export const index = async (req, res, next) => {
   const tires = await Tire.find()
     .sort({ createdAt: -1 })
     .limit(3)
-    .populate(['size', 'manufacturer', 'season']);
+    .populate(['size', 'manufacturer', 'season', 'image']);
+
+  console.log(tires);
   res.render('index', {
     pageTitle: 'All Tires',
     path: '/tires',
@@ -28,7 +31,7 @@ export const getTires = async (req, res, next) => {
 
     const page = parseInt(req.query.page) || 1;
     const tires = await Tire.find(match)
-      .populate(['manufacturer', 'season', 'size'])
+      .populate(['manufacturer', 'season', 'size', 'image'])
       .skip((page - 1) * 6)
       .limit(6);
 
@@ -62,6 +65,7 @@ export const getTire = async (req, res, next) => {
       'season',
       'size',
       'creator',
+      'image',
     ]);
 
     if (tire.creator._id.toString() === req.session.user._id.toString()) {
@@ -136,6 +140,13 @@ export const addTire = async (req, res, next) => {
       return;
     }
 
+    const image = new Image({
+      imageUrl: req.file.location,
+      imageKey: req.file.key,
+    });
+    req.body.image = image._id;
+    await image.save();
+
     const tire = new Tire({ creator: req.session.user._id, ...req.body });
 
     await tire.save();
@@ -150,7 +161,7 @@ export const getUpdateTire = async (req, res, next) => {
     const sizes = await Size.find().sort({ diameter: 1 });
     const manufacturers = await Manufacturer.find();
     const seasons = await Season.find();
-    const tire = await Tire.findById(req.params.id);
+    const tire = await Tire.findById(req.params.id).populate('image');
 
     res.render('tire/tire_form', {
       path: '',

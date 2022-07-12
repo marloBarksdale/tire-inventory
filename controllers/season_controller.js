@@ -34,7 +34,7 @@ export const getSeason = async (req, res, next) => {
 
     const season = await Season.findById(req.params.id).populate('tires');
     const tires = await Tire.find({ season: req.params.id })
-      .populate(['size', 'manufacturer', 'season'])
+      .populate(['size', 'manufacturer', 'season', 'image'])
       .skip((page - 1) * 6)
       .limit(6);
 

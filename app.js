@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import multer from 'multer';
 import auth from './middleware/auth.js';
+import Image from './models/image_model.js';
 import Manufacturer from './models/manufacturer_model.js';
 import Season from './models/season_model.js';
 import Size from './models/size_model.js';
@@ -29,51 +30,52 @@ app.use('/seasons', auth, seasonRouter);
 app.use(userRouter);
 app.use('/', auth, indexRouter);
 
-const populate = async () => {
-  const users = await User.find();
+// const populate = async () => {
+//   const users = await User.find();
 
-  // for (let i = 1; i < 15; i++) {
-  //   const manufacturer = new Manufacturer({
-  //     name: `Manufacturer ${i}`,
-  //     creator: _.sample(users)._id,
-  //   });
+// for (let i = 1; i < 15; i++) {
+//   const manufacturer = new Manufacturer({
+//     name: `Manufacturer ${i}`,
+//     creator: _.sample(users)._id,
+//   });
 
-  //   await manufacturer.save();
-  // }
+//   await manufacturer.save();
+// }
 
-  // for (let i = 1; i < 15; i++) {
-  //   const season = new Season({
-  //     name: `Season ${i}`,
-  //     creator: _.sample(users)._id,
-  //   });
-  //   await season.save();
-  // }
+// for (let i = 1; i < 15; i++) {
+//   const season = new Season({
+//     name: `Season ${i}`,
+//     creator: _.sample(users)._id,
+//   });
+//   await season.save();
+// }
 
-  // for (let i = 16; i < 46; i++) {
-  //   const size = new Size({
-  //     diameter: i,
-  //     creator: _.sample(users)._id,
-  //   });
-  //   await size.save();
-  // }
+//   for (let i = 16; i <= 30; i++) {
+//     const size = new Size({
+//       diameter: i,
+//       creator: _.sample(users)._id,
+//     });
+//     await size.save();
+//   }
 
-  const sizes = await Size.find();
-  const manufacturers = await Manufacturer.find();
-  const seasons = await Season.find();
+//   const sizes = await Size.find();
+//   const manufacturers = await Manufacturer.find();
+//   const seasons = await Season.find();
+//   const images = await Image.find();
 
-  for (let i = 1; i <= 40; i++) {
-    const tire = new Tire({
-      name: `Tire ${i}`,
-      season: _.sample(seasons, 1)._id,
-      manufacturer: _.sample(manufacturers, 1)._id,
-      size: _.sample(sizes, 1)._id,
-
-      creator: _.sample(users, 1)._id,
-      quantity: Math.floor(Math.random() * 100),
-    });
-    await tire.save();
-  }
-};
+//   for (let i = 1; i <= 40; i++) {
+//     const tire = new Tire({
+//       name: `Tire ${i}`,
+//       season: _.sample(seasons, 1)._id,
+//       manufacturer: _.sample(manufacturers, 1)._id,
+//       size: _.sample(sizes, 1)._id,
+//       image: _.sample(images, 1),
+//       creator: _.sample(users, 1)._id,
+//       quantity: Math.floor(Math.random() * 100),
+//     });
+//     await tire.save();
+//   }
+// };
 
 // populate();
 
