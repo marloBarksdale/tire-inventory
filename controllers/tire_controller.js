@@ -243,11 +243,8 @@ export const updateTire = async (req, res, next) => {
         imageKey: req.file.key,
       });
       await image.save();
-    } else {
-      image = await Image.findById('62ccc5d2de658dcece48e5ad');
+      req.body.image = image._id;
     }
-
-    req.body.image = image._id;
 
     const newTire = await Tire.findByIdAndUpdate(
       req.params.id,
