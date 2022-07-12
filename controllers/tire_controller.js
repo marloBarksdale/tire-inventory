@@ -189,15 +189,12 @@ export const updateTire = async (req, res, next) => {
     const sizes = await Size.find().sort({ diameter: 1 });
     const manufacturers = await Manufacturer.find();
     const seasons = await Season.find();
-    const tire = await Tire.findById(req.params.id);
+    const tire = await Tire.findById(req.params.id).populate('image');
 
     if (exists && exists._id.toString() !== req.params.id.toString()) {
       req.errors = new Joi.ValidationError('This tire already exists', [
         { message: 'This tire already exists', path: [''] },
       ]);
-
-      req.errors._original = req.body;
-      req.errors._original.image = tire.image;
     }
 
     if (!tire) {
@@ -209,17 +206,18 @@ export const updateTire = async (req, res, next) => {
           path: [''],
         },
       ]);
-
-      req.errors._original = req.body;
-      req.errors._original.image = tire.image;
     }
 
     if (req.errors) {
+      req.errors._original = req.body;
+      req.errors._original.image = tire.image;
+
       const details = req.errors.details.map((detail) => {
         return { message: _.upperFirst(detail.message), path: detail.path[0] };
       });
       req.errors._original.image = tire.image;
-      return res.status(422).render('tire/tire_form', {
+
+      res.status(422).render('tire/tire_form', {
         path: '',
         pageTitle: 'Update Tire',
         errorMessage: details[0].message,
@@ -230,13 +228,27 @@ export const updateTire = async (req, res, next) => {
         manufacturers,
         sizes,
       });
+
+      if (req.file) {
+        const s3Params = { Bucket: process.env.BUCKET, Key: req.body.imageKey };
+        await s3.deleteObject(s3Params).promise();
+      }
+
+      return;
     }
 
-    // if (!tire) {
-    //   return res.status(404).send('Not found');
-    // } else if (tire.creator.toString() !== req.session.user._id.toString()) {
-    //   return res.status(403).send('Update not allowed');
-    // }
+    let image = {};
+    if (req.file) {
+      image = new Image({
+        imageUrl: req.file.location,
+        imageKey: req.file.key,
+      });
+      await image.save();
+    } else {
+      image = await Image.findById('62ccc5d2de658dcece48e5ad');
+    }
+
+    req.body.image = image._id;
 
     const newTire = await Tire.findByIdAndUpdate(
       req.params.id,
@@ -262,6 +274,14 @@ export const deleteTire = async (req, res, next) => {
     }
 
     await Tire.findByIdAndDelete(req.params.id);
+
+    const image = await Image.findById(tire.image._id).populate('tires');
+
+    if (_.isEmpty(image.tires)) {
+      const s3Params = { Bucket: process.env.BUCKET, Key: image.imageKey };
+      await s3.deleteObject(s3Params).promise();
+      await Image.findByIdAndDelete(image._id);
+    }
 
     res.redirect('/tires/mine');
   } catch (error) {

@@ -5,9 +5,6 @@ import Size from './size_model.js';
 
 import { format } from 'date-fns';
 
-import enCA from 'date-fns/locale/en-CA/index.js';
-import { ObjectId } from 'mongodb';
-
 const tireSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
