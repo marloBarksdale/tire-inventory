@@ -140,12 +140,18 @@ export const addTire = async (req, res, next) => {
       return;
     }
 
-    const image = new Image({
-      imageUrl: req.file.location,
-      imageKey: req.file.key,
-    });
+    let image = {};
+    if (req.file) {
+      image = new Image({
+        imageUrl: req.file.location,
+        imageKey: req.file.key,
+      });
+      await image.save();
+    } else {
+      image = await Image.findById('62ccc5d2de658dcece48e5ad');
+    }
+
     req.body.image = image._id;
-    await image.save();
 
     const tire = new Tire({ creator: req.session.user._id, ...req.body });
 
