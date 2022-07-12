@@ -4,6 +4,7 @@ import debug from 'debug';
 import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
+import helmet from 'helmet';
 import mongoose from 'mongoose';
 import logger from 'morgan';
 import multer from 'multer';
@@ -84,7 +85,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(upload.single('image'));
-
+// app.use(helmet());
 //Set engine
 app.set('view engine', 'ejs');
 app.set('views', 'views');

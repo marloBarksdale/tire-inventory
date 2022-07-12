@@ -243,6 +243,19 @@ export const updateTire = async (req, res, next) => {
         imageKey: req.file.key,
       });
       await image.save();
+
+      const currentImage = await Image.findById(tire.image._id).populate(
+        'tires',
+      );
+      if (currentImage.tires.length === 1) {
+        const s3Params = {
+          Bucket: process.env.BUCKET,
+          Key: currentImage.imageKey,
+        };
+        await s3.deleteObject(s3Params).promise();
+        await Image.findByIdAndDelete(currentImage._id);
+      }
+
       req.body.image = image._id;
     }
 
@@ -253,6 +266,7 @@ export const updateTire = async (req, res, next) => {
       },
       { new: true, runValidators: true },
     );
+
     res.redirect(newTire.url);
   } catch (error) {
     res.status(406).send(error.message);
