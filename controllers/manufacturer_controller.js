@@ -98,7 +98,7 @@ export const addManufacturer = async (req, res, next) => {
       creator: req.session.user._id,
     }).save();
 
-    res.send(manufacturer);
+    res.redirect(manufacturer.url);
   } catch (error) {}
 };
 
@@ -191,6 +191,6 @@ export const deleteManufacturer = async (req, res, next) => {
 
     await Manufacturer.findByIdAndDelete(req.params.id);
 
-    res.send(manufacturer);
+    res.redirect('/manufacturers/mine');
   } catch (error) {}
 };

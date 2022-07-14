@@ -94,7 +94,7 @@ export const addSeason = async (req, res, next) => {
 
     const season = new Season({ ...req.body, creator: req.session.user._id });
     await season.save();
-    res.send(season);
+    res.redirect(season.url);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -151,7 +151,7 @@ export const updateSeason = async (req, res, next) => {
       { new: true },
     );
 
-    res.send(newSeason);
+    res.redirect(newSeason.url);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -177,7 +177,7 @@ export const deleteSeason = async (req, res, next) => {
     }
 
     await Season.findByIdAndDelete(req.params.id);
-    res.send(season);
+    res.redirect('/seasons/mine');
   } catch (error) {
     res.status(500).send(error.message);
   }

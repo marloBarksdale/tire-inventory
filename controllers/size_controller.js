@@ -157,7 +157,7 @@ export const updateSize = async (req, res, next) => {
       { new: true },
     );
 
-    res.send(newSize);
+    res.send(newSize.url);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -184,7 +184,7 @@ export const deleteSize = async (req, res, next) => {
 
     await Size.findByIdAndDelete(req.params.id);
 
-    res.send(size);
+    res.redirect('/sizes/mine');
   } catch (error) {
     res.status(500).send(error.message);
   }
