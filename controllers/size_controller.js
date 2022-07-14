@@ -157,7 +157,7 @@ export const updateSize = async (req, res, next) => {
       { new: true },
     );
 
-    res.send(newSize.url);
+    res.redirect(newSize.url);
   } catch (error) {
     res.status(500).send(error.message);
   }
